@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h3>Filter Pets:</h3>
+    <br>
+
+    <form action="/add-pet" method="get">
+
+        <div>
+            <select id="selectedSpecies" name="selectedSpecies">
+                <option value="all">All</option>
+                <option th:each="species: ${speciesAll}" th:value="${species}" th:text="${species}">
+                </option>
+            </select>
+        </div>
+        <button>Submit</button>
+    </form>
+
+    <br>
+    <h3 th:text="'Pets - filtered by ' + ${title} "></h3>
+    <table>
+        <tr>
+            <th>Pet ID&nbsp</th>
+            <th>Pet Name&nbsp</th>
+            <th>Species&nbsp</th>
+            <th>Color&nbsp</th>
+            <th>Size&nbsp</th>
+            <th>Status&nbsp</th>
+        </tr>
+        <tr th:each="pet : ${allPets}">
+            <td th:text="${pet.id}"></td>
+            <td th:text="${pet.petName}"></td>
+            <td th:text="${pet.petSpecies}"></td>
+            <td th:text="${pet.petColor}"></td>
+            <td th:text="${pet.petSize}"></td>
+            <td th:text="${pet.status}"></td>
+
+        </tr>
+    </table>
+    <br><br>
+
+    <h3>Create a new pet</h3>
+    <form action="/add-pet" method="post" th:object="${pet}">
+        <label>Pet Name</label>
+        <input type="text" name="petName" th:field="*{petName}">
+        <br>
+        <label>Pet Species</label>
+        <input type="text" name="petSpecies" th:field="*{petSpecies}">
+        <br>
+        <label>Pet Color</label>
+        <input type="text" name="petColor" th:field="*{petColor}">
+        <br>
+        <label>Pet Size</label>
+        <input type="text" name="petSize" th:field="*{petSize}">
+        <br>
+        <button>Add</button>
+    </form>
+
+    <h3>Delete Pet</h3>
+    <form action="/delete-pet" method="get" th:object="${pet}">
+        <label>Pet Name</label>
+        <input type="text" name="petName" th:field="*{petName}">
+        <br>
+        <label>Pet Species</label>
+        <input type="text" name="petSpecies" th:field="*{petSpecies}">
+        <br>
+        <label>Pet Color</label>
+        <input type="text" name="petColor" th:field="*{petColor}">
+        <br>
+        <label>Pet Size</label>
+        <input type="text" name="petSize" th:field="*{petSize}">
+        <br>
+        <button>Delete</button>
+    </form>
+
+    
+</body>
+</html>
