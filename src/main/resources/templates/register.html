@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div th:if="${error}" class="error-message">
+      <p th:text="${error}"></p>
+    </div>
+    <form action="/register" method="POST" th:object="${petOwner}">
+      <label for="userId">User ID</label>
+      <input type="text" name="userId" th:field="*{userId}" required />
+      <br />
+
+      <label for="firstName">First Name</label>
+      <input type="text" name="firstName" th:field="*{firstName}" required />
+      <br />
+
+      <label for="lastName">Last Name</label>
+      <input type="text" name="lastName" th:field="*{lastName}" required />
+      <br />
+      <label for="password">Password</label>
+      <input type="text" name="password" th:field="*{password}" required />
+      <br />
+      <button>Register</button>
+      <a href="/owner?type=owner">Back to login</a>
+    </form>
+  </body>
+</html>
