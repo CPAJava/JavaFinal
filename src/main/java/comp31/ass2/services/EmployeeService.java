@@ -34,7 +34,6 @@ public class EmployeeService {
   }
 
   public Employee findEmployee(String lastName){
-          System.out.println("lastName: " + lastName);
           // List<Employee> emp=employeeRepo.findByLastNameIgnoreCase(lastName);
           // System.out.println("emplist: " + emp);
           logger.info("-----------findEmployee",employeeRepo.findByLastNameIgnoreCase("lastName"));
