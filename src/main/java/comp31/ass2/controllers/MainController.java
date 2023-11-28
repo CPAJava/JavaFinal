@@ -3,6 +3,8 @@ package comp31.ass2.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,8 @@ public class MainController {
   RegisterService registerService;
   PetOwnerService petOwnerService;
 
+  Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+
   public MainController(EmployeeService employeeService, LoginService loginService,
       RegisterService registerService, PetOwnerService petOwnerService) {
     this.employeeService = employeeService;
@@ -49,6 +53,7 @@ public class MainController {
     //get the status para and find the pets based on status
     model.addAttribute("status", status);
     List<Pet> filteredPets = employeeService.findByAdoptStatus(status);
+    logger.info("pets", filteredPets);
     model.addAttribute("filteredPets", filteredPets);
 
     //get petOwner

@@ -51,12 +51,12 @@ public class InitData implements CommandLineRunner {
         petOwnerRepo.save(owner6);
 
         Pet pet1=new Pet("panC","Pan Cake", "Cat","Black", "Small",owner1,emp1,"pending");
-        Pet pet2=new Pet("Gri","Grizzly ", "Dog","Brown", "Large", owner2,emp2, "waiting");
-        Pet pet3=new Pet("Mus","Mushroom", "Cat","Yellow", "Medium ", owner3,emp3,"waiting");
+        Pet pet2=new Pet("Gri","Grizzly ", "Dog","Brown", "Large", owner2,emp2, "available");
+        Pet pet3=new Pet("Mus","Mushroom", "Cat","Yellow", "Medium ", owner3,emp3,"available");
         Pet pet4=new Pet("Fur", "Fur", "Dog","White", "Large ", owner4, emp1,"adopted");
         Pet pet5=new Pet("Pep","Pepper", "Cat","Black", "Small",owner5,emp1,"pending");
         Pet pet6=new Pet("Oll ","Ollie ", "Dog","Brown", "Large", owner6,emp2, "pending");
-        Pet pet7=new Pet("Man","Mango", "Cat","Yellow", "Medium ", owner3,emp3,"waiting");
+        Pet pet7=new Pet("Man","Mango", "Cat","Yellow", "Medium ", owner3,emp3,"available");
         Pet pet8=new Pet("Cia","Ciao", "Dog","White", "Large ", owner3, emp1,"pending");
 
         petsRepo.save(pet1);
