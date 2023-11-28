@@ -28,7 +28,7 @@ public class PetOwner {
     String status = "submitted";// set default when a new user register
     Boolean preference = false;
     @OneToMany(mappedBy = "petOwner")
-    List<Pets> pets;
+    List<Pet> pets;
     @ManyToOne
     @JoinColumn(name = "fkey_pet")
     Pet preferredPet;

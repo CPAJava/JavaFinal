@@ -1,6 +1,5 @@
 package comp31.ass2.repos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -16,11 +15,11 @@ public interface PetsRepo extends CrudRepository<Pet, Integer> {
 
     public List<Pet> findByPetName(String petName);
 
-    public List<Pet> findByPetize(String Petize);
+    public List<Pet> findByPetSize(String petSize);
 
     public List<Pet> findByPetColor(String petColor);
 
-    public List<Pet> findByPetpecies(String Petpecies);
+    public List<Pet> findByPetSpecies(String petSpecies);
 
     public List<Pet> findByAdoptStatus(String adoptStatus);
 

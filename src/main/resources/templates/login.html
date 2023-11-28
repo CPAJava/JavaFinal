@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div th:if="${isOwner}">
+      <h1>Pet Owner Login Page</h1>
+      <h2>Login</h2>
+      <form action="/login?type=owner" method="post" th:object="${petOwner}">
+        <label>User Id</label>
+        <input type="text" name="userId" required />
+        <br />
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          th:field="*{password}"
+          required
+        />
+        <button>Login</button>
+        <a href="/register">Register</a>
+      </form>
+    </div>
+
+    <div th:unless="${isOwner}">
+      <h1>Employee Login Page</h1>
+      <h2>Login</h2>
+      <form action="/login?type=employee" method="post" th:object="${employee}">
+        <label>User Id</label>
+        <input type="text" name="userId" required />
+        <br />
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          th:field="*{password}"
+          required
+        />
+        <br />
+        <button>Login</button>
+      </form>
+    </div>
+  </body>
+</html>
