@@ -9,26 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script>
-    function toggleAllPets() {
-      var allPets = document.getElementById("allPets");
-      allPets.style.display = allPets.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function togglePendingPets() {
-      var pendingPets = document.getElementById("pendingPets");
-      pendingPets.style.display = pendingPets.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleAddEmpVisibility() {
-      var addEmp = document.getElementById("addEmp");
-      addEmp.style.display = addEmp.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleAllEmployeeVisibility() {
-      var allEmployee = document.getElementById("allEmployee");
-      allEmployee.style.display = allEmployee.style.display === 'none' ? 'block' : 'none';
-    }
-
     function submitStatus() {
       var form = document.getElementById("statusForm");
       var statusDropdown = document.getElementById("adoptStatusDropdown");
@@ -37,37 +17,65 @@
       form.submit();
     }
 
-    function toggleSearchEmployee() {
-      var searchEmp = document.getElementById("searchEmployeeForm");
-      searchEmp.style.display = searchEmp.style.display === 'none' ? 'block' : 'none';
-      var searchText = document.getElementById("searchEmployee");
-
+    function submitOwnerStatus() {
+      var form = document.getElementById("ownerStatusForm");
+      var ownerStatusDropdown = document.getElementById("registrationStatusDropdown");
+      var ownerStatus = ownerStatusDropdown.options[ownerStatusDropdown.selectedIndex].value;
+      form.action = "/manager?ownerStatus=" + ownerStatus;
+      form.submit();
     }
-
-
 
   </script>
 </head>
 
 <body>
-  <div class="container">
-    <!-- Display filtered all pets -->
-    <div class="sub-div">
-      <button onclick="toggleAllPets()"> View Pet Owner</button>
+    <div id="ownerDropdown" class="sub-div">
+      <form action="/manager" method="get" id="ownerStatusForm">
+        <button type="button" onclick="submitOwnerStatus()" class="nav">List Owners by Status</button>
+        <br />
+        <select name="ownerStatus" id="registrationStatusDropdown" required>
+          <option value="" disabled selected>--select--</option>
+          <option value="submitted" text="submitted"> Submitted </option>
+          <option value="declined" text="declined"> Declined </option>
+          <option value="approved" text="approved"> Approved </option>
+        </select>
+      </form>
       <br />
-      <div id="pendingPetOwner" style="display:none; ">
-        <h2>Pending Registration Request</h2>
+      <p>Submitted - pending request that need approve or decline <br/>
+        Declined - declined registration <br/>
+        Approved - aprroved registration
+      </p>
+      <br /><br />
+      <div id="filteredOwnerData" th:if="${ownerStatus}">
+        <h5>Filtered PetOwner for <span th:text="${ownerStatus}"></span> </h5>
         <table border="1">
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Status</th>
-          </tr>
-          <tr th:each="owners:${pendingOwners}">
-            <td th:text="${owners.firstName}"></td>
-            <td th:text="${owners.lastSpecies}"></td>
-            <td th:text="${owners.Status}"></td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Owner First Name</th>
+              <th>Owner Last Name</th>
+              <th>Registration Status</th>
+              <th th:if="${ownerStatus}==submitted">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="owner:${filteredOwner}">
+              <td th:text="${owner.firstName}"></td>
+              <td th:text="${owner.lastName}"></td>
+              <td th:text="${owner.status}"></td>
+              <td th:if="${owner.status == 'submitted'}">
+                <form action="/approve-owner" method="post" id="approveOwnerForm">
+                  <input type="hidden" name="ownerId" th:value="${owner.userId}" />
+                  <div class="btn-group">
+                    <span style="display: inline-block; margin-right: 5px;">
+                      <button type="submit" name="ownerStatus" value="approved" class="btn btn-primary btn-sm">Approve</button>
+                    </span>
+                    <span style="display: inline-block;">
+                      <button type="submit" name="ownerStatus" value="declined" class="btn btn-secondary btn-sm">Decline</button>
+                    </span>
+                </form>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -75,8 +83,8 @@
     <!-- Display filtered pets based on the status -->
     <div id="statusDropdown" class="sub-div">
       <form action="/manager" method="get" id="statusForm">
-        <button type="button" onclick="submitStatus()">List Pets by Status</button>
-        <br /><br />
+        <button type="button" onclick="submitStatus()" class="nav">List Pets by Status</button>
+        <br />
         <select name="status" id="adoptStatusDropdown" required>
           <option value="" disabled selected>--select--</option>
           <option value="pending" text="pending"> Pending </option>
@@ -84,7 +92,13 @@
           <option value="adopted" text="adopted"> Adopted </option>
         </select>
       </form>
+      <br />
+      <p>Pending - adopt reqeust pending and need approve or decline <br/>
+        Adopted - pets adopted by owner <br />
+        Waiting - pets are waiting for new owner
+      </p>
 
+      <br /><br />
       <div id="filteredData" th:if="${status}">
         <h5>Filtered Pets for <span th:text="${status}"></span> </h5>
         <table border="1">
@@ -96,6 +110,8 @@
               <th>Pet Size</td>
               <th>Adopt Status</th>
               <th>Manage By</th>
+              <th th:if="${status}==pending">Owner's name</th>
+              <th th:if="${status}==pending">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -106,127 +122,27 @@
               <td th:text="${pet.petSize}"></td>
               <td th:text="${pet.adoptStatus}"></td>
               <td th:text="${pet.employee.lastName}"></td>
+              <td th:if="${pet.adoptStatus}==pending">
+                  <p h:text="${pet.owner.lastName}, ${pet.owner.lastName}"></p>
+              </td>
+              <td th:if="${pet.adoptStatus == 'pending'}">
+                  <input type="hidden" name="petId" th:value="${pet.petId}" />
+                  <div class="btn-group">
+                    <span style="display: inline-block; margin-right: 5px;">
+                      <a th:href="'mailto:'+ 'wour.3@msn.com'" class="btn btn-primary btn-sm">Approve</a>
+                    </span>
+                    <span style="display: inline-block;">
+                      <a th:href="'mailto:'+ 'wour.3@msn.com'" class="btn btn-secondary btn-sm">Decline</a>
+                    </span>
+                  </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Display pets based on the employee -->
-    <div class="sub-div">
-      <button onclick="toggleSearchEmployee()"> Search</button>
-      <form id="searchEmployeeForm" action="/manager" method="get" style="padding: 2em; display:none;">
-        <input type="text" id="searchEmployee" name="searchEmployee" placeholder="Enter employee lastname">
-        <button>submit</button>
-      </form>
 
-      <div th:if="${searchEmployee}">
-        <h2>All Pets Managed By <span th:text="${searchEmployee}"></span></h2>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Pet Name</th>
-              <th>Pet Species</th>
-              <th>Pet Color</th>
-              <th>Pet Size</td>
-              <th>Adopt Status</th>
-              <th>Manage By</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="pet:${petsByEmp}">
-              <td th:text="${pet.petName}"></td>
-              <td th:text="${pet.petSpecies}"></td>
-              <td th:text="${pet.petColor}"></td>
-              <td th:text="${pet.petSize}"></td>
-              <td th:text="${pet.adoptStatus}"></td>
-              <td th:text="${pet.employee.firstName}"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <!-- Display all pending pets (this is for future approval) -->  
-    <div class="sub-div">
-      <button onclick="togglePendingPets()"> View Pendig Pets</button>
-      <br />
-      <div id="pendingPets" style="display:none; ">
-        <h2>List All Pending Pets</h2>
-
-        <table border="1">
-          <tr>
-            <th>Pet Name</th>
-            <th>Pet Species</th>
-            <th>Pet Color</th>
-            <th>Pet Size</td>
-            <th>Adopt Status</th>
-            <th>Manage By</th>
-          </tr>
-          <tr th:each="pets:${pendingPets}">
-            <td th:text="${pets.petName}"></td>
-            <td th:text="${pets.petSpecies}"></td>
-            <td th:text="${pets.petColor}"></td>
-            <td th:text="${pets.petSize}"></td>
-            <td th:text="${pets.adoptStatus}"></td>
-            <td th:text="${pets.employee.firstName}"></td>
-          </tr>
-        </table>
-      </div>
-    </div>
-
-    <!-- Display all employee -->
-    <div class="sub-div">
-      <button type="button" onclick="toggleAllEmployeeVisibility()">List All Employees</button>
-      <div id="allEmployee" style="display:none;">
-        <h2>List All Employees</h2>
-        <table border="1">
-          <tr>
-            <th>User Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Department</th>
-          </tr>
-          <!-- Display all employees -->
-          <tr th:each="employee : ${employees}">
-            <td th:text="${employee.userId}"></td>
-            <td th:text="${employee.firstName}"></td>
-            <td th:text="${employee.lastName}"></td>
-            <td th:text="${employee.position}"></td>
-          </tr>
-        </table>
-      </div>
-    </div>
-
-    <!-- Add new employee -->
-    <div class="sub-div">
-      <button onclick="toggleAddEmpVisibility()">Add New Employee</button>
-      <form action="/add-employee" method="post" th:object="${employee}" id="addEmp" style="display:none; ">
-        <label>User Id</label>
-        <input type="text" name="userId" th:field="*{userId}" required>
-        <br>
-        <label>Password</label>
-        <input type="password" name="password" th:field="*{password}" required>
-        <br>
-        <label>First Name</label>
-        <input type="firstName" name="firstName" th:field="*{firstName}" required>
-        <br>
-        <label>Last Name</label>
-        <input type="lastName" name="lastName" th:field="*{lastName}" required>
-        <br>
-        <label>Choose your position</label>
-        <select name="position" id="positionDropdown" required>
-          <option value="" disabled selected>--select--</option>
-          <option value="Manager" text="Manager"> Manager </option>
-          <option value="Office Staff" text="Office Staff"> Office Staff </option>
-        </select>
-        <br>
-        <button>Submit</button>
-      </form>
-    </div>
-  </div>
 </body>
 
 </html>

@@ -10,4 +10,7 @@ public interface PetOwnerRepo extends CrudRepository<PetOwner, Integer> {
     public List<PetOwner> findAll();
 
     public PetOwner findByUserId(String userId);
+
+    public List<PetOwner> findByStatus(String status);
+
 }

@@ -13,24 +13,26 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Pet {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    Integer id; 
+    String petId;
     String petName;
     String petSpecies;
     String petColor;
     String petSize;
     String adoptStatus;
     @ManyToOne
-    @JoinColumn(name = "fkey_owner")
+    @JoinColumn(name="fkey_owner")
     PetOwner petOwner;
     @ManyToOne
-    @JoinColumn(name = "fkey_employee")
-    Employee employee;
+    @JoinColumn(name="fkey_employee")
+    Employee employee;   
 
-    public Pet(String petName, String petSpecies, String petColor, String petSize, PetOwner petOwner, Employee employee,
-            String adoptStatus) {
 
+    public Pet(String petId, String petName, String petSpecies, String petColor, String petSize, PetOwner petOwner, Employee employee, String adoptStatus) {
+        
+        this.petId = petId;
         this.petName = petName;
         this.petSpecies = petSpecies;
         this.petColor = petColor;
@@ -40,4 +42,5 @@ public class Pet {
         this.adoptStatus = adoptStatus;
     }
 
+    
 }

@@ -58,4 +58,8 @@ public class PetOwner {
     public int hashCode() {
         return Objects.hash(userId);
     }
+
+    public void setStatus(String newStatus) {
+        this.status = newStatus;
+    }
 }

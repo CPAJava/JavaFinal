@@ -18,15 +18,22 @@ label{
 td,th {
   border: 1px solid black;
   width: 200px;
-  text-align: center;
+  text-align: center !important;
 }
 
 button{
+  width: 100px;
+  padding: 10px;
+  margin:20px;
+
+}
+
+button.nav{
   width: 250px;
   padding: 10px;
   margin:10px;
-
 }
+
 
 button:hover {
   background-color: lightblue; 
@@ -43,9 +50,9 @@ button:hover {
 }
 
 .sub-div {
-  width: 40%; 
-  margin: 10px; 
-
+  width: 50%; 
+  margin-bottom: 30px; 
+  margin-left:20px;
 }
 
 .visible {
