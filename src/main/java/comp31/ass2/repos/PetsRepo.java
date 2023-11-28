@@ -6,25 +6,26 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import comp31.ass2.model.entity.Employee;
-import comp31.ass2.model.entity.Pets;
+import comp31.ass2.model.entity.Pet;
 
-public interface PetsRepo extends CrudRepository<Pets, Integer>{
-    //ListCrudRepository -> will give the same default method below
-    public List<Pets> findAll();
+public interface PetsRepo extends CrudRepository<Pet, Integer> {
+    // ListCrudRepository -> will give the same default method below
+    public List<Pet> findAll();
 
-    //public Pets findById(); -> this is the default given by CrudRepository
+    // public Pet findById(); -> this is the default given by CrudRepository
 
-    public List<Pets> findByPetName(String petName);
+    public List<Pet> findByPetName(String petName);
 
-    public List<Pets> findByPetSize(String petSize);
+    public List<Pet> findByPetize(String Petize);
 
-    public List<Pets> findByPetColor(String petColor);
+    public List<Pet> findByPetColor(String petColor);
 
-    public List<Pets> findByPetSpecies(String petSpecies);
+    public List<Pet> findByPetpecies(String Petpecies);
 
-    public List<Pets> findByAdoptStatus(String adoptStatus);
+    public List<Pet> findByAdoptStatus(String adoptStatus);
 
-    public List<Pets> findByEmployee(Employee employee);
+    public List<Pet> findByEmployee(Employee employee);
 
+    List<Pet> findPetsByPetSpeciesAndPetColorAndPetSize(String petSpecies, String petColor, String petSize);
 
 }

@@ -1,6 +1,7 @@
 package comp31.ass2.model.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,18 +24,38 @@ public class PetOwner {
     String firstName;
     String lastName;
     String password;
+    String email;
     String status = "submitted";// set default when a new user register
+    Boolean preference = false;
     @OneToMany(mappedBy = "petOwner")
     List<Pets> pets;
+    @ManyToOne
+    @JoinColumn(name = "fkey_pet")
+    Pet preferredPet;
 
-
-
-    public PetOwner(String userId, String firstName, String lastName, String password, String status) {
+    public PetOwner(String userId, String firstName, String lastName, String password, String status, String email,
+            Boolean preference) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.status = status;
+        this.preference = preference;
+        this.email = email;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        PetOwner other = (PetOwner) obj;
+        return Objects.equals(userId, other.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
 }
