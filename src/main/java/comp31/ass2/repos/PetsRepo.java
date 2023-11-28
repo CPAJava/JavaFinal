@@ -26,4 +26,6 @@ public interface PetsRepo extends CrudRepository<Pet, Integer> {
 
     public List<Pet> findByEmployee(Employee employee);
 
+    List<Pet> findPetsByPetSpeciesAndPetColorAndPetSize(String petSpecies, String petColor, String petSize);
+
 }
