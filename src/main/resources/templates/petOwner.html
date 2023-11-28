@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetOwnerPage</title>
+    <style>
+        table.border {border: black solid; border-collapse: collapse; margin: auto;}
+        table.border td {border: black solid thin}
+        table.border th {border: black solid thin}
+        table.noborder td {border: none}
+        
+    </style>
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+  </head>
+  <body>
+    <div th:if="${isPreferenceSet}">
+    <h1>Pet Owner's Page</h1>
+
+    <table class="border">
+        <tr>
+            <thead>
+             
+                <tr><th colspan="5">Pets</th></tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Pet Name</th>
+                    <th>Species</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Request</th>
+                  
+                </tr>
+            </thead>
+            
+            <tr th:each="pet:${pets}">
+                <td th:text="${pet.id}" ></td>
+                <td th:text="${pet.petName}"></td>
+                <td th:text="${pet.petSpecies}"></td>
+                <td th:text="${pet.petColor}"></td>
+                <td th:text="${pet.petSize}"></td>
+                <form action="/adopt" method="post">
+                <td> <input type="hidden" id="petId"  name="petId" th:value="${pet.id}" />
+                  <button type="submit">Adopt</button>
+                </td>
+              </form>
+            </tr>
+            
+       
+        </tr>
+        
+     
+    </table>
+    <div th:if="${pendingPets}!=null">
+    <h2>Your Adoption Requests</h2>
+
+    <table class="border">
+        <tr>
+            <thead>
+             
+                <tr><th colspan="7">Pet Adoption Requests</th></tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Pet Name</th>
+                    <th>Species</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Status</th>
+                    <th>Owner's Name</th>
+                  
+                </tr>
+            </thead>
+            
+            <tr th:each="pet:${pendingPets}">
+                <td th:text="${pet.id}"></td>
+                <td th:text="${pet.petName}"></td>
+                <td th:text="${pet.petSpecies}"></td>
+                <td th:text="${pet.petColor}"></td>
+                <td th:text="${pet.petSize}"></td>
+                <td th:text="${pet.adoptStatus}"></td>
+                <td th:text="${pet.petOwner.firstName}"></td>
+            </tr>
+        </tr>
+
+    </table>
+
+  </div>
+  </div>
+
+  <div th:unless="${isPreferenceSet}">
+    <h1>Set Preferences</h1>
+    <form
+      action="/petOwner"
+      method="post"
+      th:object="${preferredPet}"
+      th:modelAttribute="preferredPet"
+    >
+      <label for="petSpecies">Pet Species:</label>
+      <input
+        type="radio"
+        id="dog"
+        name="petSpecies"
+        th:field="*{petSpecies}"
+        value="dog"
+        required
+      />
+      <label for="dog">Dog</label>
+      <input
+        type="radio"
+        id="cat"
+        name="petSpecies"
+        th:field="*{petSpecies}"
+        value="cat"
+        required
+      />
+      <label for="cat">Cat</label>
+      <input
+        type="radio"
+        id="bird"
+        name="petSpecies"
+        th:field="*{petSpecies}"
+        value="bird"
+        required
+      />
+      <label for="bird">Bird</label>
+
+      <br />
+
+      <label for="petColor">Pet Color:</label>
+      <input
+        type="radio"
+        id="black"
+        name="petColor"
+        th:field="*{petColor}"
+        value="black"
+        required
+      />
+      <label for="black">Black</label>
+      <input
+        type="radio"
+        id="white"
+        name="petColor"
+        th:field="*{petColor}"
+        value="white"
+        required
+      />
+      <label for="white">White</label>
+
+      <br />
+
+      <label for="petSize">Pet Size:</label>
+      <input
+        type="radio"
+        id="small"
+        name="petSize"
+        th:field="*{petSize}"
+        value="small"
+        required
+      />
+      <label for="small">Small</label>
+      <input
+        type="radio"
+        id="medium"
+        name="petSize"
+        th:field="*{petSize}"
+        value="medium"
+        required
+      />
+      <label for="medium">Medium</label>
+
+      <br />
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <a href="/">Back to login</a>
+  </body>
+</html>

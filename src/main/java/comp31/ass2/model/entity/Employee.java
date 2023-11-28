@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  Integer id;//for database, primary key, diff from userID
+  Integer id;// for database, primary key, diff from userID
   String userId;
   String firstName;
   String lastName;
   String password;
   String position;
-  @OneToMany(mappedBy = "employee")  //one to many relationship to the pets
-  List<Pets> pets;
+  @OneToMany(mappedBy = "employee") // one to many relationship to the pets
+  List<Pet> pets;
 
   public Employee(String userId, String firstName, String lastName, String password, String position) {
     this.userId = userId;
@@ -33,5 +33,5 @@ public class Employee {
     this.lastName = lastName;
     this.password = password;
     this.position = position;
-  }    
+  }
 }
