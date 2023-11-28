@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
 import comp31.ass2.model.entity.PetOwner;
-import comp31.ass2.model.entity.Pets;
+
 import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
@@ -50,20 +50,20 @@ public class MainController {
 
     // get the status para and find the pets based on status
     model.addAttribute("status", status);
-    List<Pets> filteredPets = employeeService.findByAdoptStatus(status);
+    List<Pet> filteredPets = employeeService.findByAdoptStatus(status);
     model.addAttribute("filteredPets", filteredPets);
 
     // get only the pending pets
-    List<Pets> pendingPets = employeeService.findByAdoptStatus("pending");
+    List<Pet> pendingPets = employeeService.findByAdoptStatus("pending");
     model.addAttribute("pendingPets", pendingPets);
 
     // get all pets
-    List<Pets> allPets = employeeService.findAllPets();
+    List<Pet> allPets = employeeService.findAllPets();
     model.addAttribute("allPets", allPets);
 
     // get pets based on the employee lastname
     model.addAttribute("searchEmployee", searchEmployee);
-    List<Pets> petsByEmp = employeeService.findPetsByEmployeeLastName(searchEmployee);
+    List<Pet> petsByEmp = employeeService.findPetsByEmployeeLastName(searchEmployee);
     model.addAttribute("petsByEmp", petsByEmp);
 
     return "manager";
@@ -85,13 +85,19 @@ public class MainController {
 
   @GetMapping(value = { "/owner", "/employee" })
   public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType) {
+    Boolean isOwner;
     if ("owner".equals(loginType)) {
       PetOwner petOwner = new PetOwner();
       model.addAttribute("petOwner", petOwner);
-      return "ownerLogin";
+      isOwner = true;
     } else {
-      return "employeeLogin";
+      Employee employee = new Employee();
+      model.addAttribute("employee", employee);
+      isOwner = false;
     }
+    model.addAttribute("isOwner", isOwner);
+
+    return "login";
   }
 
   @PostMapping("/petOwner")
