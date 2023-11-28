@@ -1,7 +1,6 @@
 package comp31.ass2.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,6 @@ public class PetOwnerService {
     public void setPreferences(PetOwner petOwner, Pet preferredPet) {
         petOwner.setPreference(true);
         petOwner.setPreferredPet(preferredPet);
-        petOwnerRepo.save(petOwner);
 
     }
 
@@ -50,7 +48,7 @@ public class PetOwnerService {
         adoptedPet.setPetOwner(petOwner);
 
         // Update the pet's status or any other logic you need
-        adoptedPet.setStatus("pending");
+        adoptedPet.setAdoptStatus("pending");
 
         // Save the changes to the database
         petsRepo.save(adoptedPet);

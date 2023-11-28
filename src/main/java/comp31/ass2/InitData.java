@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
 import comp31.ass2.model.entity.PetOwner;
-import comp31.ass2.model.entity.Pets;
+
 import comp31.ass2.repos.EmployeeRepo;
 import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
@@ -35,7 +35,7 @@ public class InitData implements CommandLineRunner {
         employeeRepo.save(emp2);
         employeeRepo.save(emp3);
 
-        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "submitted", "ash@fake.com", false);
+        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "approved", "ash@fake.com", false);
         PetOwner owner2 = new PetOwner("bill", "Bill", "Jack", "abc", "approved", "bill@fake.com", true);
         PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "declined", "lil@fake.com", false);
 
