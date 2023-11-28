@@ -1,7 +1,9 @@
 package comp31.ass2.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,15 +11,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import comp31.ass2.model.entity.Employee;
+import comp31.ass2.model.entity.Pet;
+import comp31.ass2.model.entity.PetOwner;
 import comp31.ass2.model.entity.Pets;
 import comp31.ass2.services.EmployeeService;
+import comp31.ass2.services.LoginService;
+import comp31.ass2.services.PetOwnerService;
+import comp31.ass2.services.RegisterService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
   EmployeeService employeeService;
 
-  public MainController(EmployeeService employeeService) {
+  LoginService loginService;
+  RegisterService registerService;
+  PetOwnerService petOwnerService;
+
+  public MainController(EmployeeService employeeService, LoginService loginService,
+      RegisterService registerService, PetOwnerService petOwnerService) {
     this.employeeService = employeeService;
+    this.loginService = loginService;
+    this.registerService = registerService;
+    this.petOwnerService = petOwnerService;
   }
 
   @GetMapping("/")
@@ -26,26 +42,26 @@ public class MainController {
   }
 
   @GetMapping("/manager")
-  public String getRequest(Model model, String status,String searchEmployee) { 
-    //get all employees
+  public String getRequest(Model model, String status, String searchEmployee) {
+    // get all employees
     model.addAttribute("employee", new Employee());
     List<Employee> employees = employeeService.findAllEmployees();
     model.addAttribute("employees", employees);
 
-    //get the status para and find the pets based on status
+    // get the status para and find the pets based on status
     model.addAttribute("status", status);
     List<Pets> filteredPets = employeeService.findByAdoptStatus(status);
     model.addAttribute("filteredPets", filteredPets);
 
-    //get only the pending pets
+    // get only the pending pets
     List<Pets> pendingPets = employeeService.findByAdoptStatus("pending");
     model.addAttribute("pendingPets", pendingPets);
 
-    //get all pets
+    // get all pets
     List<Pets> allPets = employeeService.findAllPets();
     model.addAttribute("allPets", allPets);
 
-    //get pets based on the employee lastname
+    // get pets based on the employee lastname
     model.addAttribute("searchEmployee", searchEmployee);
     List<Pets> petsByEmp = employeeService.findPetsByEmployeeLastName(searchEmployee);
     model.addAttribute("petsByEmp", petsByEmp);
@@ -58,4 +74,109 @@ public class MainController {
     employeeService.addEmployee(newEmployee);
     return "redirect:/manager";
   }
+
+  // ********************************************** Pet Owner related controllers
+  // (Manlin):
+
+  @GetMapping("success")
+  public String showSuccessPage() {
+    return "success";
+  }
+
+  @GetMapping(value = { "/owner", "/employee" })
+  public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType) {
+    if ("owner".equals(loginType)) {
+      PetOwner petOwner = new PetOwner();
+      model.addAttribute("petOwner", petOwner);
+      return "ownerLogin";
+    } else {
+      return "employeeLogin";
+    }
+  }
+
+  @PostMapping("/petOwner")
+  public String setPreferences(Model model, HttpSession session, Pet preferedPet) {
+    PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
+
+    petOwnerService.setPreferences(currentPetOwner, preferedPet);
+
+    return "redirect:/petOwner";
+  }
+
+  @PostMapping("/adopt")
+  public String setStatus(Model model, HttpSession session, Pet preferedPet,
+      @RequestParam(name = "petId", required = false) Integer petId) {
+    PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
+
+    // Find the selected pet by its ID
+    Pet adoptedPet = petOwnerService.findPetById(petId);
+    // Associate the pet with the current pet owner
+    petOwnerService.adoptPet(currentPetOwner, adoptedPet);
+    return "redirect:/petOwner";
+  }
+
+  @GetMapping("/petOwner")
+  public String getPetOwnerPage(Model model, PetOwner petOwner, HttpSession session, Pet preferredPet) {
+    // Retrieve the current owner from the session
+    PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
+    Boolean isPreferenceSet = petOwnerService.preferenceIsSet(currentPetOwner);
+    List<Pet> pendingPets = new ArrayList<>();
+    model.addAttribute("isPreferenceSet", isPreferenceSet);
+    if (isPreferenceSet) {
+      // Pet preferences are set, show the pet owner page
+      List<Pet> pets = petOwnerService.findPreferredPets(currentPetOwner);
+      model.addAttribute("pets", pets);
+
+      for (Pet pet : pets) {
+        if (pet.getPetOwner() != null && pet.getPetOwner().equals(currentPetOwner)
+            && "pending".equals(pet.getAdoptStatus())) {
+          pendingPets.add(pet);
+        }
+      }
+      if (pendingPets != null) {
+        model.addAttribute("pendingPets", pendingPets);
+      }
+
+    } else {
+      // Pet preferences are not set, show the preference form
+      model.addAttribute("preferredPet", new Pet());
+
+    }
+
+    return "petOwner";
+  }
+
+  @GetMapping("/register")
+  public String getRegister(Model model) {
+
+    model.addAttribute("petOwner", new PetOwner());
+    return "register";
+  }
+
+  // post petOwner
+  @PostMapping("/register")
+  public String registerNewPetOwner(Model model, PetOwner newPetOwner) {
+
+    try {
+      registerService.registerPetOwner(newPetOwner);
+      return "redirect:/success"; // Redirect to a success page
+    } catch (DataIntegrityViolationException e) {
+      model.addAttribute("error", e.getMessage());
+      return "register"; // Return to the registration form with an error message
+    }
+  }
+
+  @PostMapping("/login")
+  public String getForm(PetOwner petOwner, Model model, HttpSession session) {
+
+    // validating user to select the correct form
+    String returnPage = loginService.getValidForm(petOwner);
+
+    if (returnPage.equals("redirect:/petOwner")) {
+      // If the login is successful, set the current owner in the session
+      session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
+    }
+    return returnPage;
+  }
+
 }
