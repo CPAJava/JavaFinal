@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,6 +19,7 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -86,18 +88,40 @@ public class MainController {
   @GetMapping(value = { "/owner", "/employee" })
   public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType) {
     Boolean isOwner;
+    PetOwner petOwner = new PetOwner();
+    Employee employee = new Employee();
     if ("owner".equals(loginType)) {
-      PetOwner petOwner = new PetOwner();
       model.addAttribute("petOwner", petOwner);
       isOwner = true;
     } else {
-      Employee employee = new Employee();
       model.addAttribute("employee", employee);
       isOwner = false;
     }
     model.addAttribute("isOwner", isOwner);
 
     return "login";
+  }
+
+  @PostMapping("/login")
+  public String getForm(@ModelAttribute("petOwner") PetOwner petOwner,
+      @ModelAttribute("employee") Employee employee,
+      Model model,
+      HttpSession session, @RequestParam(name = "type", required = false) String loginType) {
+    String returnPage = "index";
+    if ("owner".equals(loginType)) {
+      // Handle PetOwner login
+      returnPage = loginService.getValidForm(petOwner);
+      if (returnPage.equals("redirect:/petOwner")) {
+        session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
+      }
+    } else if ("employee".equals(loginType)) {
+      // Handle Employee login
+      returnPage = loginService.getValidForm(employee);
+      // Handle Employee login logic
+      session.setAttribute("currentEmployee", loginService.findByUserId(employee.getUserId()));
+    }
+
+    return returnPage;
   }
 
   @PostMapping("/petOwner")
@@ -170,19 +194,6 @@ public class MainController {
       model.addAttribute("error", e.getMessage());
       return "register"; // Return to the registration form with an error message
     }
-  }
-
-  @PostMapping("/login")
-  public String getForm(PetOwner petOwner, Model model, HttpSession session) {
-
-    // validating user to select the correct form
-    String returnPage = loginService.getValidForm(petOwner);
-
-    if (returnPage.equals("redirect:/petOwner")) {
-      // If the login is successful, set the current owner in the session
-      session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
-    }
-    return returnPage;
   }
 
 }

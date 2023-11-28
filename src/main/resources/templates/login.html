@@ -9,7 +9,7 @@
     <div th:if="${isOwner}">
       <h1>Pet Owner Login Page</h1>
       <h2>Login</h2>
-      <form action="/login" method="post" th:object="${petOwner}">
+      <form action="/login?type=owner" method="post" th:object="${petOwner}">
         <label>User Id</label>
         <input type="text" name="userId" required />
         <br />
@@ -28,7 +28,7 @@
     <div th:unless="${isOwner}">
       <h1>Employee Login Page</h1>
       <h2>Login</h2>
-      <form action="/login" method="post" th:object="${employee}">
+      <form action="/login?type=employee" method="post" th:object="${employee}">
         <label>User Id</label>
         <input type="text" name="userId" required />
         <br />
