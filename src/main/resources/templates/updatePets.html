@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Find Pet</h3>
+    <form action="/find-pet" method="get" th:object="${found}">
+        <label>Pet Name</label>
+        <input type="text" name="petName" id="petName">
+        <br>
+        
+        <button>Search</button>
+    </form>
+
+    <!-- <p th:text="${pet.petName}"></p> -->
+
+    <h3>Update Pet Information</h3>
+    <form action="/update-pet" method="post" th:object="${found}">
+        <label>Pet ID</label>
+        <input type="text" name="id" th:field="*{id}">
+        <br>
+        <label>Pet Name</label>
+        <input type="text" name="petName" th:field="*{petName}">
+        <br>
+        <label>Pet Species</label>
+        <input type="text" name="petSpecies" th:field="*{petSpecies}">
+        <br>
+        <label>Pet Color</label>
+        <input type="text" name="petColor" th:field="*{petColor}">
+        <br>
+        <label>Pet Size</label>
+        <input type="text" name="petSize" th:field="*{petSize}">
+        <br>        
+        <label>Adoption Status</label>
+        <input type="text" name="adoptStatus" th:field="*{adoptStatus}">
+        <br>
+        <button>Update</button>
+    </form>
+    <h3><a href="/showAllPets">Update Pet Record</a></h3h3>
+</body>
+</html>

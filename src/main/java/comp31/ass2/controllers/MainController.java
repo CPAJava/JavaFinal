@@ -21,6 +21,7 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
+import comp31.ass2.services.StaffService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -31,15 +32,18 @@ public class MainController {
   LoginService loginService;
   RegisterService registerService;
   PetOwnerService petOwnerService;
+  //Adding staffService by Xuancheng
+  StaffService staffService;
 
   Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
   public MainController(EmployeeService employeeService, LoginService loginService,
-      RegisterService registerService, PetOwnerService petOwnerService) {
+      RegisterService registerService, PetOwnerService petOwnerService, StaffService staffService) {
     this.employeeService = employeeService;
     this.loginService = loginService;
     this.registerService = registerService;
     this.petOwnerService = petOwnerService;
+    this.staffService =staffService;
   }
 
   @GetMapping("/")
@@ -190,4 +194,69 @@ public class MainController {
     }
   }
 
+  // ********************************************** Staff/Pets related controllers
+  // (Xuancheng):
+  //getStaffMain() was modified from getRoot() controller
+  @GetMapping({"/showAllPets", "/add-pet"})
+    public String getStaffMain(@RequestParam(defaultValue = "all") String selectedSpecies, Model model) {
+        model.addAttribute("pet", new Pet());
+        // List<Pets> pets = staffService.findAllPets();
+        // model.addAttribute("allPets", pets); 
+        model.addAttribute("speciesAll", staffService.findAllPetSpecies());
+
+        if (selectedSpecies.equals("all")) {
+            model.addAttribute("allPets", staffService.findAllPets());
+            model.addAttribute("title", "All");
+        } else {
+            model.addAttribute("allPets", staffService.findByPetSpecies(selectedSpecies));
+            model.addAttribute("title", selectedSpecies);
+        }
+
+        return "pets";
+    }
+
+    @PostMapping("/add-pet")
+    public String postRegister(Model model, Pet newPet) {
+
+        model.addAttribute("pet", new Pet());
+        staffService.insertPet(newPet);
+
+        return "redirect:/add-pet";
+    }
+
+    @GetMapping("/delete-pet")
+    public String deletePetByName(Model model, @RequestParam(defaultValue = "") String petName) {
+        staffService.deleteByPetName(petName);
+        model.addAttribute("pet", new Pet());
+
+        return "redirect:/add-pet";
+    }
+
+    @GetMapping({"/updatePetPage", "/find-pet"})
+    public String findPetByName(Model model, @RequestParam(defaultValue = "") String petName) {
+        //logger.info("pets------", petName);
+        // System.out.println(petName);
+        model.addAttribute("petName", petName);
+        //List<Pets> foundPet = staffService.findBypetName(petName);
+        //logger.info("pets------", foundPet);
+        if (petName.isEmpty()) {
+            Pet found = new Pet();
+            model.addAttribute("found", found);
+        }
+        else {
+        Pet found = new Pet();
+        found = staffService.findBypetName(petName).get(0); 
+        model.addAttribute("found", found);
+        }
+        return "updatePets";
+    }
+
+    @PostMapping("/update-pet")
+    public String updatePetInfo(Model model, Pet newPet) {
+
+        model.addAttribute("found", new Pet());
+        staffService.insertPet(newPet);
+
+        return "redirect:/find-pet";
+    }
 }

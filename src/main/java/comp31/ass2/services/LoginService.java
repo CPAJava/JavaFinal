@@ -64,7 +64,11 @@ public class LoginService {
             if (currentEmployee.getPosition() == "manager") {
                 return "redirect:/manager";
             }
-
+            //Tom
+            else if (currentEmployee.getPosition() == "office") {
+                return "redirect:/showAllPets";
+            }
+            //Tom
         }
         return "login";
     }
