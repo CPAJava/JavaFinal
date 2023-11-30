@@ -35,12 +35,12 @@ public class InitData implements CommandLineRunner {
         employeeRepo.save(emp2);
         employeeRepo.save(emp3);
 
-        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "approved", "ash@fake.com", false);
+        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "submitted", "ash@fake.com", false);
         PetOwner owner2 = new PetOwner("bill", "Bill", "Jack", "abc", "submitted", "bill@fake.com", true);
-        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "declined", "lil@fake.com", false);
-        PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "approved", "cathy@fake.com", false);
+        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "submitted", "lil@fake.com", false);
+        PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "submitted", "cathy@fake.com", false);
         PetOwner owner5 = new PetOwner("dale", "Dale", "Bill", "abc", "submitted", "dale@fake.com", true);
-        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "declined", "phil@fake.com", false);
+        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "submitted", "phil@fake.com", false);
 
         petOwnerRepo.save(owner1);
         petOwnerRepo.save(owner2);

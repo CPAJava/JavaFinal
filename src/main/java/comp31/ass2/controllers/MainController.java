@@ -21,7 +21,6 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
