@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
@@ -78,8 +79,14 @@ public class MainController {
     return "success";
   }
 
+  @GetMapping("/notApprovedPage")
+    public String showNotApprovedOrIncorrectPage() {
+        return "notApprovedOrIncorrect";
+    }
+
   @GetMapping(value = { "/owner", "/employee" })
-  public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType) {
+  public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType,
+  RedirectAttributes redirectAttributes) {
     Boolean isOwner;
     PetOwner petOwner = new PetOwner();
     Employee employee = new Employee();
@@ -92,6 +99,11 @@ public class MainController {
     }
     model.addAttribute("isOwner", isOwner);
 
+    //handling error message
+    String errorMessage = (String) redirectAttributes.getFlashAttributes().get("error");
+    if (errorMessage != null) {
+        model.addAttribute("error", errorMessage);
+    }
     return "login";
   }
 
@@ -99,21 +111,31 @@ public class MainController {
   public String getForm(@ModelAttribute("petOwner") PetOwner petOwner,
       @ModelAttribute("employee") Employee employee,
       Model model,
+      RedirectAttributes redirectAttributes,
       HttpSession session, @RequestParam(name = "type", required = false) String loginType) {
-    String returnPage = "index";
+    String returnPage = "login";
     if ("owner".equals(loginType)) {
       // Make sure the status of the current user passed in
-      PetOwner currenPetOwner = loginService.findByUserId(petOwner.getUserId());
-      returnPage = loginService.getValidForm(currenPetOwner);
-      if (returnPage.equals("redirect:/petOwner")) {
+      //PetOwner currenPetOwner = loginService.findByUserId(petOwner.getUserId());
+       try {
+     
+      returnPage = loginService.getValidForm(petOwner);
+     if (returnPage.equals("redirect:/petOwner")) {
         session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
       }
-    } else if ("employee".equals(loginType)) {
+    
+    } catch (DataIntegrityViolationException e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "redirect:/owner?type=owner"; 
+    }} else if ("employee".equals(loginType)) {
       // Handle Employee login
       returnPage = loginService.getValidForm(employee);
       // Handle Employee login logic
       session.setAttribute("currentEmployee", loginService.findByUserId(employee.getUserId()));
     }
+      
+      
+      
 
     return returnPage;
   }
@@ -136,7 +158,7 @@ public class MainController {
     Pet adoptedPet = petOwnerService.findPetById(petId);
     // Associate the pet with the current pet owner
     petOwnerService.adoptPet(currentPetOwner, adoptedPet);
-    List<Pet> pets = currentPetOwner.getPets();
+    List<Pet> pets = adoptedPet.getPetOwner().getPets();
     pets.size();
     for (Pet pet : pets) {
       System.out.println(pet.getAdoptStatus());
@@ -153,10 +175,10 @@ public class MainController {
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
 
-    if (currentPetOwner == null) {
-      // Handle the case where currentPetOwner is null, e.g., redirect to login page
-      return "redirect:/";
-    }
+    // if (currentPetOwner == null) {
+    //   // Handle the case where currentPetOwner is null, e.g., redirect to login page
+    //   return "redirect:/";
+    // }
 
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {

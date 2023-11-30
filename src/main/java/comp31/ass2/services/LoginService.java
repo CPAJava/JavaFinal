@@ -2,6 +2,7 @@ package comp31.ass2.services;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import comp31.ass2.model.entity.PetOwner;
@@ -36,11 +37,11 @@ public class LoginService {
         return employeeRepo.findByUserId(userId);
     }
 
-    // Validate user credentials and return the corresponding department or login
+    // Validate user credentials and return the corresponding user or login
     // page
     public String getValidForm(PetOwner petOwner) {
-        PetOwner currentOwner = findByUserId(petOwner.getUserId());
-        ;
+         PetOwner currentOwner = findByUserId(petOwner.getUserId());
+      
         if (currentOwner != null && petOwner.getPassword().equals(currentOwner.getPassword())) {
             if ("approved".equals(currentOwner.getStatus())) {
                 // if (currentOwner.getPreference()) {
@@ -50,11 +51,17 @@ public class LoginService {
                 // return "redirect:/setPreferences";
                 // }
 
+            }else{
+                return "redirect:/notApprovedPage";
             }
 
+        }else{
+             throw new DataIntegrityViolationException(
+                    "User with ID " + petOwner.getUserId() + " password incorrect/user does not exist, please try again.");
+       
         }
-        return "login";
-
+           
+        
     }
 
     public String getValidForm(Employee employee) {
