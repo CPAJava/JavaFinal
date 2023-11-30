@@ -3,7 +3,9 @@ package comp31.ass2.model.entity;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,12 +30,9 @@ public class PetOwner {
     String email;
     String status = "submitted";// set default when a new user register
     Boolean preference = false;
-    @OneToMany(mappedBy = "petOwner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner")
     @ToString.Exclude
     List<Pet> pets;
-    @ManyToOne
-    @JoinColumn(name = "fkey_pet")
-    Pet preferredPet;
 
     public PetOwner(String userId, String firstName, String lastName, String password, String status, String email,
             Boolean preference) {
