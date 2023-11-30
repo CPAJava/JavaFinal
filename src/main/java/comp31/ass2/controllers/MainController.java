@@ -102,8 +102,9 @@ public class MainController {
       HttpSession session, @RequestParam(name = "type", required = false) String loginType) {
     String returnPage = "index";
     if ("owner".equals(loginType)) {
-      // Handle PetOwner login
-      returnPage = loginService.getValidForm(petOwner);
+      // Make sure the status of the current user passed in
+      PetOwner currenPetOwner = loginService.findByUserId(petOwner.getUserId());
+      returnPage = loginService.getValidForm(currenPetOwner);
       if (returnPage.equals("redirect:/petOwner")) {
         session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
       }

@@ -42,7 +42,7 @@ public class LoginService {
         PetOwner currentOwner = findByUserId(petOwner.getUserId());
         ;
         if (currentOwner != null && petOwner.getPassword().equals(currentOwner.getPassword())) {
-            if (currentOwner.getStatus() == "approved") {
+            if ("approved".equals(currentOwner.getStatus())) {
                 // if (currentOwner.getPreference()) {
 
                 return "redirect:/petOwner";
