@@ -64,7 +64,7 @@ public class MainController {
     return "manager";
   }
 
-  @PostMapping("/approve-owner") // Post new added employee data and redirect to /employee
+  @PostMapping("/approve-owner") // Post owner's status
   public String approveOwner(String ownerId, String ownerStatus) {
     employeeService.setOwnerStatus(ownerId, ownerStatus);
     return "redirect:/manager";
