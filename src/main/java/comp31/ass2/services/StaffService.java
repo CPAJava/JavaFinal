@@ -27,8 +27,14 @@ public class StaffService {
         return petsRepo.findAll();
     }
     
-    public List<Pet> findBypetName(String petName) {
-        return petsRepo.findByPetName(petName);
+    public Pet findBypetName(String petName) {
+        Pet foundPet = new Pet();
+        List<Pet> tempFound = petsRepo.findByPetName(petName);
+        if (!tempFound.isEmpty()){
+            foundPet = tempFound.get(0);
+        }
+        return foundPet;
+        //return petsRepo.findByPetName(petName);
     }
 
     public void insertPet(Pet newPet) {
@@ -37,10 +43,12 @@ public class StaffService {
 
     public void deleteByPetName(String delName) {
         List<Pet> tempPets = petsRepo.findByPetName(delName);
-        System.out.println(tempPets);
-        Pet tempPet = tempPets.get(0);
-        Integer tempPetId = tempPet.getId();
-        petsRepo.deleteById(tempPetId);
+        //System.out.println(tempPets);
+        if (!tempPets.isEmpty()) {
+            Pet tempPet = tempPets.get(0);
+            Integer tempPetId = tempPet.getId();
+            petsRepo.deleteById(tempPetId);
+        }
     }
 
     public List<Pet> findByPetSpecies(String species) {

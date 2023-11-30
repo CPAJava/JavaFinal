@@ -122,17 +122,18 @@
               <td th:text="${pet.petSize}"></td>
               <td th:text="${pet.adoptStatus}"></td>
               <td th:text="${pet.employee.lastName}"></td>
+              <td th:text="${pet.employee}"></td>
               <td th:if="${status}=='pending'">
-                  <p th:text="${pet.petOwner.firstName} + ' '+ ${pet.petOwner.lastName}"></p>
+                  <!-- <p th:text="${pet.petOwner.firstName} + ' '+ ${pet.petOwner.lastName}"></p> -->
               </td>
               <td th:if="${pet.adoptStatus == 'pending'}">
                   <input type="hidden" name="petId" th:value="${pet.petId}" />
                   <div class="btn-group">
                     <span style="display: inline-block; margin-right: 5px;">
-                      <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-primary btn-sm">Approve</a>
+                      <!-- <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-primary btn-sm">Approve</a> -->
                     </span>
                     <span style="display: inline-block;">
-                      <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-secondary btn-sm">Decline</a>
+                      <!-- <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-secondary btn-sm">Decline</a> -->
                     </span>
                   </div>
               </td>
