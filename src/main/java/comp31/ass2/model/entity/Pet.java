@@ -16,6 +16,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
+    String petId;
     String petName;
     String petSpecies;
     String petColor;
@@ -28,9 +29,10 @@ public class Pet {
     @JoinColumn(name = "fkey_employee")
     Employee employee;
 
-    public Pet(String petName, String petSpecies, String petColor, String petSize, PetOwner petOwner, Employee employee,
-            String adoptStatus) {
+    public Pet(String petId, String petName, String petSpecies, String petColor, String petSize, PetOwner petOwner,
+            Employee employee, String adoptStatus) {
 
+        this.petId = petId;
         this.petName = petName;
         this.petSpecies = petSpecies;
         this.petColor = petColor;

@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -30,6 +31,7 @@ public class PetOwner {
     String status = "submitted";// set default when a new user register
     Boolean preference = false;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner")
+    @ToString.Exclude
     List<Pet> pets;
 
     public PetOwner(String userId, String firstName, String lastName, String password, String status, String email,
@@ -56,5 +58,9 @@ public class PetOwner {
     @Override
     public int hashCode() {
         return Objects.hash(userId);
+    }
+
+    public void setStatus(String newStatus) {
+        this.status = newStatus;
     }
 }

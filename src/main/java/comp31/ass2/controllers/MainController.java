@@ -3,6 +3,8 @@ package comp31.ass2.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,8 @@ public class MainController {
   RegisterService registerService;
   PetOwnerService petOwnerService;
 
+  Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+
   public MainController(EmployeeService employeeService, LoginService loginService,
       RegisterService registerService, PetOwnerService petOwnerService) {
     this.employeeService = employeeService;
@@ -44,38 +48,28 @@ public class MainController {
   }
 
   @GetMapping("/manager")
-  public String getRequest(Model model, String status, String searchEmployee) {
-    // get all employees
-    model.addAttribute("employee", new Employee());
-    List<Employee> employees = employeeService.findAllEmployees();
-    model.addAttribute("employees", employees);
-
-    // get the status para and find the pets based on status
+  public String getRequest(Model model, String status, String searchEmployee, String ownerStatus) {
+   
+    //get the status para and find the pets based on status
     model.addAttribute("status", status);
     List<Pet> filteredPets = employeeService.findByAdoptStatus(status);
+    logger.info("pets", filteredPets);
     model.addAttribute("filteredPets", filteredPets);
 
-    // get only the pending pets
-    List<Pet> pendingPets = employeeService.findByAdoptStatus("pending");
-    model.addAttribute("pendingPets", pendingPets);
-
-    // get all pets
-    List<Pet> allPets = employeeService.findAllPets();
-    model.addAttribute("allPets", allPets);
-
-    // get pets based on the employee lastname
-    model.addAttribute("searchEmployee", searchEmployee);
-    List<Pet> petsByEmp = employeeService.findPetsByEmployeeLastName(searchEmployee);
-    model.addAttribute("petsByEmp", petsByEmp);
+    //get petOwner
+     List<PetOwner> filteredOwner=employeeService.findOwnerByStatus(ownerStatus);
+    model.addAttribute("ownerStatus", ownerStatus);
+    model.addAttribute("filteredOwner", filteredOwner);
 
     return "manager";
   }
 
-  @PostMapping("/add-employee") // Post new added employee data and redirect to /employee
-  public String postAddEmployee(Employee newEmployee) {
-    employeeService.addEmployee(newEmployee);
+  @PostMapping("/approve-owner") // Post new added employee data and redirect to /employee
+  public String approveOwner(String ownerId, String ownerStatus) {
+    employeeService.setOwnerStatus(ownerId, ownerStatus);
     return "redirect:/manager";
   }
+
 
   // ********************************************** Pet Owner related controllers
   // (Manlin):

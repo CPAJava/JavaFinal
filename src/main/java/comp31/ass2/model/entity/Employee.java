@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 // import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -25,6 +26,7 @@ public class Employee {
   String password;
   String position;
   @OneToMany(mappedBy = "employee") // one to many relationship to the pets
+  @ToString.Exclude
   List<Pet> pets;
 
   public Employee(String userId, String firstName, String lastName, String password, String position) {
