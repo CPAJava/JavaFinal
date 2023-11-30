@@ -47,12 +47,12 @@ public class InitData implements CommandLineRunner {
         petOwnerRepo.save(owner2);
         petOwnerRepo.save(owner3);
 
-        petsRepo.save(new Pet("ash", "dog", "black", "big", owner1, emp1, "available"));
-        petsRepo.save(new Pet("bill", "cat", "orange", "medium", owner2, emp2, "available"));
-        petsRepo.save(new Pet("lil", "bird", "white", "small", owner3, emp3, "available"));
-        petsRepo.save(new Pet("lil2", "bird", "white", "small", owner1, emp1, "available"));
-        petsRepo.save(new Pet("lil3", "bird", "white", "small", owner2, emp1, "available"));
-        petsRepo.save(new Pet("lil4", "bird", "white", "small", owner3, emp2, "available"));
+        petsRepo.save(new Pet("ash", "dog", "black", "big", emp1, "available"));
+        petsRepo.save(new Pet("bill", "cat", "orange", "medium", emp2, "available"));
+        petsRepo.save(new Pet("lil", "bird", "white", "small", emp3, "available"));
+        petsRepo.save(new Pet("lil2", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil3", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil4", "bird", "white", "small", emp2, "available"));
 
         petsRepo.save(new Pet("Pan Cake", "Cat", "Black", "Small", owner1, emp1, "pending"));
         petsRepo.save(new Pet("Grizzly ", "Dog", "Brown", "Large", owner2, emp2, "waiting"));

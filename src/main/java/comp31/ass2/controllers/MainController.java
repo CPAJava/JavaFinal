@@ -142,6 +142,12 @@ public class MainController {
     Pet adoptedPet = petOwnerService.findPetById(petId);
     // Associate the pet with the current pet owner
     petOwnerService.adoptPet(currentPetOwner, adoptedPet);
+    List<Pet> pets = currentPetOwner.getPets();
+    pets.size();
+    for (Pet pet : pets) {
+      System.out.println(pet.getAdoptStatus());
+      System.out.println(pet.getPetName());
+    }
     return "redirect:/petOwner";
   }
 
@@ -151,21 +157,29 @@ public class MainController {
     PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
     Boolean isPreferenceSet = petOwnerService.preferenceIsSet(currentPetOwner);
     List<Pet> pendingPets = new ArrayList<>();
+    List<Pet> availablePets = new ArrayList<>();
+
+    if (currentPetOwner == null) {
+      // Handle the case where currentPetOwner is null, e.g., redirect to login page
+      return "redirect:/";
+    }
+
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
       // Pet preferences are set, show the pet owner page
-      List<Pet> pets = petOwnerService.findPreferredPets(currentPetOwner);
-      model.addAttribute("pets", pets);
+      List<Pet> pets = currentPetOwner.getPets();
 
       for (Pet pet : pets) {
-        if (pet.getPetOwner() != null && pet.getPetOwner().equals(currentPetOwner)
-            && "pending".equals(pet.getAdoptStatus())) {
+
+        if ("pending".equals(pet.getAdoptStatus())) {
           pendingPets.add(pet);
+        } else if ("available".equals(pet.getAdoptStatus())) {
+          availablePets.add(pet);
         }
       }
-      if (pendingPets != null) {
-        model.addAttribute("pendingPets", pendingPets);
-      }
+
+      model.addAttribute("pendingPets", pendingPets);
+      model.addAttribute("pets", availablePets);
 
     } else {
       // Pet preferences are not set, show the preference form
