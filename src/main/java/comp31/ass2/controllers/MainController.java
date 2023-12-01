@@ -198,12 +198,12 @@ public class MainController {
   // (Xuancheng):
   //getStaffMain() was modified from getRoot() controller
   @GetMapping({"/showAllPets", "/add-pet"})
-    public String getStaffMain(@RequestParam(defaultValue = "all") String selectedSpecies, Model model) {
+    public String getStaffMain(@RequestParam(defaultValue = "all") String selectedSpecies, @RequestParam(defaultValue = "") String staff, Model model) {
         model.addAttribute("pet", new Pet());
         // List<Pets> pets = staffService.findAllPets();
         // model.addAttribute("allPets", pets); 
         model.addAttribute("speciesAll", staffService.findAllPetSpecies());
-
+        model.addAttribute("staffAll", staffService.findAllStaffs());
         if (selectedSpecies.equals("all")) {
             model.addAttribute("allPets", staffService.findAllPets());
             model.addAttribute("title", "All");
@@ -211,16 +211,26 @@ public class MainController {
             model.addAttribute("allPets", staffService.findByPetSpecies(selectedSpecies));
             model.addAttribute("title", selectedSpecies);
         }
+        model.addAttribute("staffInCharge", staffService.findByUserId(staff));
 
         return "pets";
     }
 
     @PostMapping("/add-pet")
-    public String postRegister(Model model, Pet newPet) {
+    public String postRegister(Model model, Pet newPet, @RequestParam(defaultValue = "") String userId) {
 
-        model.addAttribute("pet", new Pet());
+        //model.addAttribute("pet", new Pet());
+
+        Employee employeeInCharge = staffService.findByUserId(userId);
+        //PetOwner dummyOwner = new PetOwner("dummy","dummy","dummy","dummy","dummy","dummy",false);
+        //dummyOwner.setPreferredPet(newPet);
+        System.out.println(userId);
+        //System.out.println(dummyOwner);
+        newPet.setEmployee(employeeInCharge);
+        newPet.setAdoptStatus("available");
+        //newPet.setPetOwner(dummyOwner);
         staffService.insertPet(newPet);
-
+        System.out.println(newPet);
         return "redirect:/add-pet";
     }
 

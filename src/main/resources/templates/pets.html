@@ -40,6 +40,7 @@
             <td th:text="${pet.petColor}"></td>
             <td th:text="${pet.petSize}"></td>
             <td th:text="${pet.adoptStatus}"></td>
+            <!-- <td th:text="${pet.employee.userid}"></td> -->
 
         </tr>
     </table>
@@ -61,6 +62,13 @@
         <br>
         <label>Adoption Status</label>
         <input type="text" name="adoptStatus" th:field="*{adoptStatus}">
+        <br>
+        <label>Staff Name</label>
+        <select id="userId" name="userId">
+            <!-- <option value="all">All</option> -->
+            <option th:each="staff: ${staffAll}" th:value="${staff}" th:text="${staff}">
+            </option>
+        </select>
         <br>
         <button>Add</button>
     </form>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
 import comp31.ass2.repos.EmployeeRepo;
 import comp31.ass2.repos.PetsRepo;
@@ -67,6 +68,21 @@ public class StaffService {
         ArrayList<String> allPetSpecies = new ArrayList<>(hashmap.keySet());
 
         return allPetSpecies;
+    }
+
+    public ArrayList<String> findAllStaffs() {
+        ArrayList<String> allStaffs = new ArrayList<>();
+        List<Employee> allEmployee = employeeRepo.findAll();
+        for (int i = 0; i < allEmployee.size(); i++) {
+            if(allEmployee.get(i).getPosition().equals("office")) {
+                allStaffs.add(allEmployee.get(i).getUserId());
+            }
+        }
+        return allStaffs;
+    }
+
+    public Employee findByUserId(String userId) {
+        return employeeRepo.findByUserId(userId);
     }
 
     // public void updatePetByName(String petName) {
