@@ -44,24 +44,15 @@ public class LoginService {
       
         if (currentOwner != null && petOwner.getPassword().equals(currentOwner.getPassword())) {
             if ("approved".equals(currentOwner.getStatus())) {
-                // if (currentOwner.getPreference()) {
-
                 return "redirect:/petOwner";
-                // } else {
-                // return "redirect:/setPreferences";
-                // }
-
             }else{
                 return "redirect:/notApprovedPage";
             }
-
         }else{
              throw new DataIntegrityViolationException(
                     "User with ID " + petOwner.getUserId() + " password incorrect/user does not exist, please try again.");
-       
         }
            
-        
     }
 
     public String getValidForm(Employee employee) {

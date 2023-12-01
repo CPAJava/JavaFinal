@@ -35,7 +35,7 @@ public class InitData implements CommandLineRunner {
         employeeRepo.save(emp2);
         employeeRepo.save(emp3);
 
-        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "submitted", "ash@fake.com", false);
+        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "approved", "ash@fake.com", false);
         PetOwner owner2 = new PetOwner("bill", "Bill", "Jack", "abc", "submitted", "bill@fake.com", true);
         PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "submitted", "lil@fake.com", false);
         PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "submitted", "cathy@fake.com", false);
@@ -56,7 +56,7 @@ public class InitData implements CommandLineRunner {
         petsRepo.save(new Pet("lil2", "bird", "white", "small", emp1, "available"));
         petsRepo.save(new Pet("lil3", "bird", "white", "small", emp1, "available"));
         petsRepo.save(new Pet("lil4", "bird", "white", "small", emp2, "available"));
-        Pet pet1 = new Pet("panC", "Pan Cake", "Cat", "Black", "Small", owner1, emp1, "pending");
+        Pet pet1 = new Pet("panC", "Pan Cake", "Cat", "Black", "Small", owner2, emp1, "pending");
         Pet pet2 = new Pet("Gri", "Grizzly ", "Dog", "Brown", "Large", owner2, emp2, "available");
         Pet pet3 = new Pet("Mus", "Mushroom", "Cat", "Yellow", "Medium ", owner3, emp3, "available");
         Pet pet4 = new Pet("Fur", "Fur", "Dog", "White", "Large ", owner4, emp1, "adopted");
