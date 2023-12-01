@@ -8,6 +8,7 @@ import comp31.ass2.model.entity.Pet;
 import comp31.ass2.model.entity.PetOwner;
 import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PetOwnerService {
@@ -19,6 +20,7 @@ public class PetOwnerService {
         this.petsRepo = petsRepo;
     }
 
+    //****MOVE TO PET SERVICE!!!!! */
     public Pet findPetById(Integer petId) {
         return petsRepo.findById(petId).orElse(null);
     }
@@ -32,6 +34,7 @@ public class PetOwnerService {
     public void setPreferences(PetOwner petOwner, Pet preferredPet) {
         petOwner.setPreference(true);
         petOwner.setPets(findPreferredPets(preferredPet));
+        petOwner.setPreferredType(preferredPet);
         petOwnerRepo.save(petOwner);
 
     }
@@ -44,9 +47,11 @@ public class PetOwnerService {
         return petsRepo.findPetsByPetSpeciesAndPetColorAndPetSize(preferredSpecies, preferredColor, preferredSize);
     }
 
+ 
     public void adoptPet(PetOwner petOwner, Pet adoptedPet) {
 
-        List<Pet> pets = petOwner.getPets();
+        // List<Pet> pets = petOwner.getPets();
+        List<Pet> pets = findPreferredPets(petOwner.getPreferredType());
         // Update the pet's status
         for (Pet pet : pets) {
             // Set the pet owner for the adopted pet
@@ -56,9 +61,15 @@ public class PetOwnerService {
                 petsRepo.save(pet);
             }
         }
-
+      
+       // petOwner.getPets().add(adoptedPet);
+        // adoptedPet.setAdoptStatus("pending");
+        // adoptedPet.setPetOwner(petOwner);
+        // petsRepo.save(adoptedPet);
+        petOwner.setPets(pets);
         // Save the changes to the database
-        petOwnerRepo.save(petOwner);
-
+       // petOwnerRepo.save(petOwner);
+       
     }
+    
 }

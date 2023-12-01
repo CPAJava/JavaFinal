@@ -9,6 +9,9 @@
     <div th:if="${isOwner}">
       <h1>Pet Owner Login Page</h1>
       <h2>Login</h2>
+      <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+      </div>
       <form action="/login?type=owner" method="post" th:object="${petOwner}">
         <label>User Id</label>
         <input type="text" name="userId" required />

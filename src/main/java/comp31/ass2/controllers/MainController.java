@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
@@ -21,7 +22,6 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -49,15 +49,15 @@ public class MainController {
 
   @GetMapping("/manager")
   public String getRequest(Model model, String status, String searchEmployee, String ownerStatus) {
-   
-    //get the status para and find the pets based on status
+
+    // get the status para and find the pets based on status
     model.addAttribute("status", status);
     List<Pet> filteredPets = employeeService.findByAdoptStatus(status);
     logger.info("pets", filteredPets);
     model.addAttribute("filteredPets", filteredPets);
 
-    //get petOwner
-     List<PetOwner> filteredOwner=employeeService.findOwnerByStatus(ownerStatus);
+    // get petOwner
+    List<PetOwner> filteredOwner = employeeService.findOwnerByStatus(ownerStatus);
     model.addAttribute("ownerStatus", ownerStatus);
     model.addAttribute("filteredOwner", filteredOwner);
 
@@ -70,7 +70,6 @@ public class MainController {
     return "redirect:/manager";
   }
 
-
   // ********************************************** Pet Owner related controllers
   // (Manlin):
 
@@ -79,8 +78,14 @@ public class MainController {
     return "success";
   }
 
+  @GetMapping("/notApprovedPage")
+  public String showNotApprovedOrIncorrectPage() {
+    return "notApprovedOrIncorrect";
+  }
+
   @GetMapping(value = { "/owner", "/employee" })
-  public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType) {
+  public String showLoginPage(Model model, @RequestParam(name = "type", required = false) String loginType,
+      RedirectAttributes redirectAttributes) {
     Boolean isOwner;
     PetOwner petOwner = new PetOwner();
     Employee employee = new Employee();
@@ -93,6 +98,11 @@ public class MainController {
     }
     model.addAttribute("isOwner", isOwner);
 
+    // handling error message
+    String errorMessage = (String) redirectAttributes.getFlashAttributes().get("error");
+    if (errorMessage != null) {
+      model.addAttribute("error", errorMessage);
+    }
     return "login";
   }
 
@@ -100,13 +110,22 @@ public class MainController {
   public String getForm(@ModelAttribute("petOwner") PetOwner petOwner,
       @ModelAttribute("employee") Employee employee,
       Model model,
+      RedirectAttributes redirectAttributes,
       HttpSession session, @RequestParam(name = "type", required = false) String loginType) {
-    String returnPage = "index";
+    String returnPage = "login";
     if ("owner".equals(loginType)) {
-      // Handle PetOwner login
-      returnPage = loginService.getValidForm(petOwner);
-      if (returnPage.equals("redirect:/petOwner")) {
-        session.setAttribute("currentPetOwner", loginService.findByUserId(petOwner.getUserId()));
+      // Make sure the status of the current user passed in
+      PetOwner currenPetOwner = loginService.findByUserId(petOwner.getUserId());
+      try {
+        returnPage = loginService.getValidForm(petOwner);
+        if (returnPage.equals("redirect:/petOwner")) {
+          session.setAttribute("currentPetOwner", loginService.findByUserId(currenPetOwner.getUserId()));
+        
+        }
+
+      } catch (DataIntegrityViolationException e) {
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
+        return "redirect:/owner?type=owner";
       }
     } else if ("employee".equals(loginType)) {
       // Handle Employee login
@@ -146,22 +165,27 @@ public class MainController {
   }
 
   @GetMapping("/petOwner")
-  public String getPetOwnerPage(Model model, PetOwner petOwner, HttpSession session, Pet preferredPet) {
+  public String getPetOwnerPage(Model model, PetOwner petOwner, HttpSession session) {
     // Retrieve the current owner from the session
     PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
     Boolean isPreferenceSet = petOwnerService.preferenceIsSet(currentPetOwner);
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
 
-    if (currentPetOwner == null) {
-      // Handle the case where currentPetOwner is null, e.g., redirect to login page
-      return "redirect:/";
-    }
-
+    // if (currentPetOwner == null) {
+    // // Handle the case where currentPetOwner is null, e.g., redirect to login
+    // page
+    // return "redirect:/";
+    // }
+  
+          
+            System.out.println(currentPetOwner.getPreferredType());
+          
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
       // Pet preferences are set, show the pet owner page
-      List<Pet> pets = currentPetOwner.getPets();
+     List<Pet> pets = petOwnerService.findPreferredPets(currentPetOwner.getPreferredType());
+      // List<Pet> pets = currentPetOwner.getPets();
 
       for (Pet pet : pets) {
 
