@@ -151,7 +151,6 @@ public class MainController {
   @PostMapping("/adopt")
   public String setStatus(Model model, HttpSession session, Pet preferedPet,
       @RequestParam(name = "petId", required = false) Integer petId) {
-    // session.removeAttribute("currentPetOwner");
     PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
 
     // Find the selected pet by its ID
@@ -170,33 +169,29 @@ public class MainController {
   @GetMapping("/petOwner")
   public String getPetOwnerPage(Model model, PetOwner petOwner, HttpSession session) {
     // Retrieve the current owner from the session
-    // session.removeAttribute("currentPetOwner");
     PetOwner currentPetOwner = (PetOwner) session.getAttribute("currentPetOwner");
     Boolean isPreferenceSet = petOwnerService.preferenceIsSet(currentPetOwner);
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
-
-    // if (currentPetOwner == null) {
-    // // Handle the case where currentPetOwner is null, e.g., redirect to login
-    // page
-    // return "redirect:/";
-    // }
 
     System.out.println(currentPetOwner.getPreferredType());
 
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
       // Pet preferences are set, show the pet owner page
-      List<Pet> pets = petOwnerService.findPreferredPets(currentPetOwner.getPreferredType());
+      List<Pet> pets = petOwnerService.findPreferredPets(petOwnerService.findPreferedType(currentPetOwner));
       // List<Pet> pets = currentPetOwner.getPets();
 
+      // !!!!!!!!!Need to move to pet services
       for (Pet pet : pets) {
 
-        if ("pending".equals(pet.getAdoptStatus())) {
+        if ("pending".equals(pet.getAdoptStatus())
+            && currentPetOwner.getUserId().equals(pet.getPetOwner().getUserId())) {
           pendingPets.add(pet);
         } else if ("available".equals(pet.getAdoptStatus())) {
           availablePets.add(pet);
         }
+
       }
 
       model.addAttribute("pendingPets", pendingPets);

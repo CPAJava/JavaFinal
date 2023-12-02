@@ -1,14 +1,11 @@
 package comp31.ass2.services;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import comp31.ass2.model.entity.Pet;
 import comp31.ass2.model.entity.PetOwner;
 import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
-import jakarta.transaction.Transactional;
 
 @Service
 public class PetOwnerService {
@@ -20,7 +17,7 @@ public class PetOwnerService {
         this.petsRepo = petsRepo;
     }
 
-    //****MOVE TO PET SERVICE!!!!! */
+    // ****MOVE TO PET SERVICE!!!!! */
     public Pet findPetById(Integer petId) {
         return petsRepo.findById(petId).orElse(null);
     }
@@ -47,7 +44,6 @@ public class PetOwnerService {
         return petsRepo.findPetsByPetSpeciesAndPetColorAndPetSize(preferredSpecies, preferredColor, preferredSize);
     }
 
- 
     public void adoptPet(PetOwner petOwner, Pet adoptedPet) {
 
         // List<Pet> pets = petOwner.getPets();
@@ -61,15 +57,13 @@ public class PetOwnerService {
                 petsRepo.save(pet);
             }
         }
-      
-       // petOwner.getPets().add(adoptedPet);
-        // adoptedPet.setAdoptStatus("pending");
-        // adoptedPet.setPetOwner(petOwner);
-        // petsRepo.save(adoptedPet);
+
         petOwner.setPets(pets);
-        // Save the changes to the database
-       // petOwnerRepo.save(petOwner);
-       
+
     }
-    
+
+    public Pet findPreferedType(PetOwner currentOwner) {
+        return currentOwner.getPreferredType();
+    }
+
 }
