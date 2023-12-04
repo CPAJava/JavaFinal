@@ -255,7 +255,7 @@ public class MainController {
         }
         else {
         Pet found = new Pet();
-        found = staffService.findBypetName(petName); 
+        found = staffService.findByPetName(petName); 
         model.addAttribute("found", found);
         }
         return "updatePets";
