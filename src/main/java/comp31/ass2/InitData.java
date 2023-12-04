@@ -55,15 +55,15 @@ public class InitData implements CommandLineRunner {
         Pet pet3=new Pet("Mus","Mushroom", "Cat","Yellow", "Medium ",emp3,"available");
         Pet pet4=new Pet("Fur", "Fur", "Dog","White", "Large ", owner4, emp1,"adopted");
         Pet pet5=new Pet("Pep","Pepper", "Cat","Black", "Small",owner5,emp1,"pending");
-        Pet pet6=new Pet("Oll ","Ollie ", "Dog","Brown", "Large", owner6,emp2, "pending");
+        Pet pet6=new Pet("Oll ","Ollie", "Dog","Brown", "Large", owner6,emp2, "pending");
         Pet pet7=new Pet("Man","Mango", "Cat","Yellow", "Medium ",emp3,"available");
         Pet pet8=new Pet("Cia","Ciao", "Dog","White", "Large ", owner3, emp1,"pending");
-        petsRepo.save(new Pet("ash", "dog", "black", "big", emp1, "available"));
-        petsRepo.save(new Pet("bill", "cat", "orange", "medium", emp2, "available"));
-        petsRepo.save(new Pet("lil", "bird", "white", "small", emp3, "available"));
-        petsRepo.save(new Pet("lil2", "bird", "white", "small", emp1, "available"));
-        petsRepo.save(new Pet("lil3", "bird", "white", "small", emp1, "available"));
-        petsRepo.save(new Pet("lil4", "bird", "white", "small", emp2, "available"));
+        petsRepo.save(new Pet("ash","ash", "dog", "black", "big", emp1, "available"));
+        petsRepo.save(new Pet("bill","bill", "cat", "orange", "medium", emp2, "available"));
+        petsRepo.save(new Pet("lil","lil", "bird", "white", "small", emp3, "available"));
+        petsRepo.save(new Pet("lil2","lil2", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil3","lil3", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil4","lil4", "bird", "white", "small", emp2, "available"));
        
         petsRepo.save(pet1);
         petsRepo.save(pet2);
