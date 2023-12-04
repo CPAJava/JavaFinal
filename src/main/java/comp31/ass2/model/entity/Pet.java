@@ -40,7 +40,18 @@ public class Pet {
         this.petOwner = petOwner;
         this.employee = employee;
         this.adoptStatus = adoptStatus;
+    }    public Pet(String petId, String petName, String petSpecies, String petColor, String petSize,Employee employee, String adoptStatus) {
+        
+        this.petId = petId;
+        this.petName = petName;
+        this.petSpecies = petSpecies;
+        this.petColor = petColor;
+        this.petSize = petSize;
+      
+        this.employee = employee;
+        this.adoptStatus = adoptStatus;
     }
+
 
     
 }
