@@ -32,7 +32,7 @@ public class PetOwner {
     String status = "submitted";// set default when a new user register
     Boolean preference = false;
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner",orphanRemoval = true)
     @ToString.Exclude
     List<Pet> pets;
     @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
