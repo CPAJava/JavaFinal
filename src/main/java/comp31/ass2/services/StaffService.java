@@ -28,7 +28,7 @@ public class StaffService {
         return petsRepo.findAll();
     }
     
-    public Pet findBypetName(String petName) {
+    public Pet findByPetName(String petName) {
         Pet foundPet = new Pet();
         List<Pet> tempFound = petsRepo.findByPetName(petName);
         if (!tempFound.isEmpty()){
