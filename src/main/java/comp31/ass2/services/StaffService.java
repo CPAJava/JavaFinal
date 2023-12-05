@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
+import comp31.ass2.model.entity.PetOwner;
 import comp31.ass2.repos.EmployeeRepo;
+import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
 
 //This StaffService is added by Xuancheng to support Staff user cases/application functions
@@ -18,10 +20,12 @@ public class StaffService {
 
     EmployeeRepo employeeRepo;
     PetsRepo petsRepo;
+    PetOwnerRepo petOwnerRepo;
 
-    public StaffService(EmployeeRepo employeeRepo, PetsRepo petsRepo) {
+    public StaffService(EmployeeRepo employeeRepo, PetsRepo petsRepo, PetOwnerRepo petOwnerRepo) {
         this.employeeRepo = employeeRepo;
         this.petsRepo = petsRepo;
+        this.petOwnerRepo =petOwnerRepo;
     }
 
     public List<Pet> findAllPets() {
@@ -85,8 +89,11 @@ public class StaffService {
         return employeeRepo.findByUserId(userId);
     }
 
-    // public void updatePetByName(String petName) {
-    //     List<Pet> updateOne = findBypetName(petName);
+    public List<PetOwner> findAllOwners() {
+        return petOwnerRepo.findAll();
+    }
 
-    // }
+    public PetOwner findOwnerByUserId(String userId) {
+        return petOwnerRepo.findByUserId(userId);
+    }
 }
