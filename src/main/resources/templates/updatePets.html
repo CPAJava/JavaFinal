@@ -37,11 +37,22 @@
         <label>Adoption Status</label>
         <input type="text" name="adoptStatus" th:field="*{adoptStatus}">
         <br>
-        <label>Pet Owner</label>
+        <!-- <label>Pet Owner</label>
         <input type="text" name="petOwner" th:field="*{petOwner}">
+        <br> -->
+        
+        <!-- <h3 th:text="'Please select ' + *{petOwner} + ' as pet owner, if owner is not changed.'"></h3> -->
+        <h4 th:text="'Please select ' + ${currentOwner} + ' as pet owner, if owner is not changed.'"></h4>
+        <br>
+        <label>Pet Owner</label>
+        <select id="ownerId" name="ownerId">
+            <option value="">-</option>
+            <option th:each="owner: ${ownerAll}" th:value="${owner.userId}" th:text="${owner.userId}">
+            </option>
+        </select>
         <br>
         <button>Update</button>
     </form>
-    <h3><a href="/showAllPets">Go Back</a></h3h3>
+    <h3><a href="/showAllPets">Go Back</a></h3>
 </body>
 </html>
