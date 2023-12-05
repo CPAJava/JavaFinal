@@ -31,13 +31,14 @@ public class PetOwner {
     String email;
     String status = "submitted";// set default when a new user register
     Boolean preference = false;
-    
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner",cascade = CascadeType.ALL)
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "petOwner", cascade = CascadeType.ALL)
     @ToString.Exclude
     List<Pet> pets;
-    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "fkey_preferred_type")
-    Pet preferredType;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fkey_pet_preferences")
+    PetPreferences petPreferences;
 
     public PetOwner(String userId, String firstName, String lastName, String password, String status, String email,
             Boolean preference) {
