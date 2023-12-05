@@ -174,7 +174,7 @@ public class MainController {
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
 
-    System.out.println(currentPetOwner.getPreferredType());
+    // System.out.println(currentPetOwner.getPreferredType());
 
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
