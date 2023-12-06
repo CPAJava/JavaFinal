@@ -122,8 +122,10 @@ public class MainController {
       try {
         returnPage = loginService.getValidForm(petOwner);
         if (returnPage.equals("redirect:/petOwner")) {
+          session.removeAttribute("currentPetOwner");
+          session.removeAttribute("currentEmployee");
           session.setAttribute("currentPetOwner", loginService.findByUserId(currenPetOwner.getUserId()));
-        
+
         }
 
       } catch (DataIntegrityViolationException e) {
@@ -175,28 +177,24 @@ public class MainController {
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
 
-    // if (currentPetOwner == null) {
-    // // Handle the case where currentPetOwner is null, e.g., redirect to login
-    // page
-    // return "redirect:/";
-    // }
-  
-          
-            System.out.println(currentPetOwner.getPreferredType());
-          
+    // System.out.println(currentPetOwner.getPreferredType());
+
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
       // Pet preferences are set, show the pet owner page
-     List<Pet> pets = petOwnerService.findPreferredPets(currentPetOwner.getPreferredType());
+      List<Pet> pets = petOwnerService.findPreferredPets(petOwnerService.findPreferedType(currentPetOwner));
       // List<Pet> pets = currentPetOwner.getPets();
 
+      // !!!!!!!!!Need to move to pet services
       for (Pet pet : pets) {
 
-        if ("pending".equals(pet.getAdoptStatus())) {
+        if ("pending".equals(pet.getAdoptStatus())
+            && currentPetOwner.getUserId().equals(pet.getPetOwner().getUserId())) {
           pendingPets.add(pet);
         } else if ("available".equals(pet.getAdoptStatus())) {
           availablePets.add(pet);
         }
+
       }
 
       model.addAttribute("pendingPets", pendingPets);
