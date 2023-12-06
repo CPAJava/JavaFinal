@@ -159,10 +159,6 @@ public class MainController {
     petOwnerService.adoptPet(currentPetOwner, adoptedPet);
     List<Pet> pets = currentPetOwner.getPets();
     pets.size();
-    for (Pet pet : pets) {
-      System.out.println(pet.getAdoptStatus());
-      System.out.println(pet.getPetName());
-    }
     return "redirect:/petOwner";
   }
 
@@ -174,17 +170,12 @@ public class MainController {
     List<Pet> pendingPets = new ArrayList<>();
     List<Pet> availablePets = new ArrayList<>();
 
-    // System.out.println(currentPetOwner.getPreferredType());
-
     model.addAttribute("isPreferenceSet", isPreferenceSet);
     if (isPreferenceSet) {
       // Pet preferences are set, show the pet owner page
       List<Pet> pets = petOwnerService.findPreferredPets(petOwnerService.findPreferedType(currentPetOwner));
-      // List<Pet> pets = currentPetOwner.getPets();
 
-      // !!!!!!!!!Need to move to pet services
       for (Pet pet : pets) {
-
         if ("pending".equals(pet.getAdoptStatus())
             && currentPetOwner.getUserId().equals(pet.getPetOwner().getUserId())) {
           pendingPets.add(pet);
@@ -200,7 +191,6 @@ public class MainController {
     } else {
       // Pet preferences are not set, show the preference form
       model.addAttribute("preferredPet", new Pet());
-
     }
 
     return "petOwner";
@@ -208,7 +198,6 @@ public class MainController {
 
   @GetMapping("/register")
   public String getRegister(Model model) {
-
     model.addAttribute("petOwner", new PetOwner());
     return "register";
   }
