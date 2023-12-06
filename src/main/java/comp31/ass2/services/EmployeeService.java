@@ -1,3 +1,23 @@
+/*
+* Author: Yanan Liu
+* Date: 2023-12-06
+*
+* Class/File: EmployeeRepo.java
+*
+* Additional context:
+* This Java class represents the service layer for handling business logic related to employees in the application.
+* It is annotated with Spring's @Service to indicate that it provides business services.
+*
+* The class includes instance variables for repositories, specifically "EmployeeRepo," "PetsRepo," and "PetOwnerRepo."
+* These repositories are injected through the constructor, allowing the service to interact with the corresponding entities.
+*
+* The service interacts with the repositories ("EmployeeRepo," "PetsRepo," "PetOwnerRepo") to perform CRUD operations
+* on the associated entities, namely "Employee," "Pets," and "PetOwner."
+*
+* Additional Notes:
+* - Business logic is encapsulated within this service to handle operations related to employees, pets, and pet owners.
+*/
+
 package comp31.ass2.services;
 
 import java.util.List;
