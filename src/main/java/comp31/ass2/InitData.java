@@ -37,10 +37,10 @@ public class InitData implements CommandLineRunner {
 
         PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "approved", "ash@fake.com", false);
         PetOwner owner2 = new PetOwner("bill", "Bill", "Jack", "abc", "submitted", "bill@fake.com", true);
-        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "declined", "lil@fake.com", false);
-        PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "approved", "cathy@fake.com", false);
+        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "submitted", "lil@fake.com", false);
+        PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "submitted", "cathy@fake.com", false);
         PetOwner owner5 = new PetOwner("dale", "Dale", "Bill", "abc", "submitted", "dale@fake.com", true);
-        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "declined", "phil@fake.com", false);
+        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "submitted", "phil@fake.com", false);
 
         petOwnerRepo.save(owner1);
         petOwnerRepo.save(owner2);
@@ -50,23 +50,29 @@ public class InitData implements CommandLineRunner {
         petOwnerRepo.save(owner5);
         petOwnerRepo.save(owner6);
 
-        Pet pet1=new Pet("panC","Pan Cake", "Cat","Black", "Small",owner1,emp1,"pending");
-        Pet pet2=new Pet("Gri","Grizzly ", "Dog","Brown", "Large", owner2,emp2, "available");
-        Pet pet3=new Pet("Mus","Mushroom", "Cat","Yellow", "Medium ", owner3,emp3,"available");
-        Pet pet4=new Pet("Fur", "Fur", "Dog","White", "Large ", owner4, emp1,"adopted");
-        Pet pet5=new Pet("Pep","Pepper", "Cat","Black", "Small",owner5,emp1,"pending");
-        Pet pet6=new Pet("Oll ","Ollie ", "Dog","Brown", "Large", owner6,emp2, "pending");
-        Pet pet7=new Pet("Man","Mango", "Cat","Yellow", "Medium ", owner3,emp3,"available");
-        Pet pet8=new Pet("Cia","Ciao", "Dog","White", "Large ", owner3, emp1,"pending");
+        petsRepo.save(new Pet("ash", "dog", "black", "big", emp1, "available"));
+        petsRepo.save(new Pet("bill", "cat", "orange", "medium", emp2, "available"));
+        petsRepo.save(new Pet("lil", "bird", "white", "small", emp3, "available"));
+        petsRepo.save(new Pet("lil2", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil3", "bird", "white", "small", emp1, "available"));
+        petsRepo.save(new Pet("lil4", "bird", "white", "small", emp2, "available"));
+        Pet pet1 = new Pet("panC", "Pan Cake", "Cat", "Black", "Small", owner2, emp1, "pending");
+        Pet pet2 = new Pet("Gri", "Grizzly ", "Dog", "Brown", "Large", owner2, emp2, "available");
+        Pet pet3 = new Pet("Mus", "Mushroom", "Cat", "Yellow", "Medium ", owner3, emp3, "available");
+        Pet pet4 = new Pet("Fur", "Fur", "Dog", "White", "Large ", owner4, emp1, "adopted");
+        Pet pet5 = new Pet("Pep", "Pepper", "Cat", "Black", "Small", owner5, emp1, "pending");
+        Pet pet6 = new Pet("Oll ", "Ollie ", "Dog", "Brown", "Large", owner6, emp2, "pending");
+        Pet pet7 = new Pet("Man", "Mango", "Cat", "Yellow", "Medium ", owner3, emp3, "available");
+        Pet pet8 = new Pet("Cia", "Ciao", "Dog", "White", "Large ", owner3, emp1, "pending");
 
         petsRepo.save(pet1);
         petsRepo.save(pet2);
         petsRepo.save(pet3);
         petsRepo.save(pet4);
         petsRepo.save(pet5);
-        petsRepo.save(pet6);     
+        petsRepo.save(pet6);
         petsRepo.save(pet7);
-        petsRepo.save(pet8);   
+        petsRepo.save(pet8);
 
     }
 
