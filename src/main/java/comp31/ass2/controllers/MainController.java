@@ -21,7 +21,6 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -47,29 +46,31 @@ public class MainController {
     return "index";
   }
 
+  // ********************************************** Employee Manager related controllers
+  // (Yanan):
   @GetMapping("/manager")
   public String getRequest(Model model, String status, String searchEmployee, String ownerStatus) {
-   
-    //get the status para and find the pets based on status
+
+    // get the status para and find the pets based on status
     model.addAttribute("status", status);
     List<Pet> filteredPets = employeeService.findByAdoptStatus(status);
     logger.info("pets", filteredPets);
     model.addAttribute("filteredPets", filteredPets);
 
-    //get petOwner
-     List<PetOwner> filteredOwner=employeeService.findOwnerByStatus(ownerStatus);
+    // get petOwner and get the owner based on status
+    List<PetOwner> filteredOwner = employeeService.findOwnerByStatus(ownerStatus);
     model.addAttribute("ownerStatus", ownerStatus);
     model.addAttribute("filteredOwner", filteredOwner);
 
     return "manager";
   }
 
+  // Post the approve/decline to update the owner's status
   @PostMapping("/approve-owner") // Post owner's status
   public String approveOwner(String ownerId, String ownerStatus) {
     employeeService.setOwnerStatus(ownerId, ownerStatus);
     return "redirect:/manager";
   }
-
 
   // ********************************************** Pet Owner related controllers
   // (Manlin):

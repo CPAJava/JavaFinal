@@ -9,20 +9,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script>
+    //to submit the registration status, alert when no option is selected
     function submitStatus() {
       var form = document.getElementById("statusForm");
       var statusDropdown = document.getElementById("adoptStatusDropdown");
       var selectedStatus = statusDropdown.options[statusDropdown.selectedIndex].value;
-      form.action = "/manager?status=" + selectedStatus;
-      form.submit();
+
+      if (selectedStatus === "") {
+        alert("Please select an option from the below dropdown list");
+      } else {
+        form.action = "/manager?status=" + selectedStatus;
+        form.submit();
+      }
     }
 
+    //to submit the registration status, alert when no option is selected
     function submitOwnerStatus() {
       var form = document.getElementById("ownerStatusForm");
       var ownerStatusDropdown = document.getElementById("registrationStatusDropdown");
       var ownerStatus = ownerStatusDropdown.options[ownerStatusDropdown.selectedIndex].value;
-      form.action = "/manager?ownerStatus=" + ownerStatus;
-      form.submit();
+
+      if (ownerStatus === "") {
+        alert("Please select an option from the below dropdown list");
+      } else {
+        form.action = "/manager?ownerStatus=" + ownerStatus;
+        form.submit();
+      }
     }
 
   </script>
@@ -31,120 +43,139 @@
 <body>
   <h2>Welcome Manager</h2>
   <br />
-  <h5><i>Choose a button to click</i></h5>
   <br />
-    <div id="ownerDropdown" class="sub-div">
-      <form action="/manager" method="get" id="ownerStatusForm">
-        <button type="button" onclick="submitOwnerStatus()" class="nav">List Owners by Status</button>
-        <br />
-        <select name="ownerStatus" id="registrationStatusDropdown" required>
-          <option value="" disabled selected>--select--</option>
-          <option value="submitted" text="submitted"> Submitted </option>
-          <option value="declined" text="declined"> Declined </option>
-          <option value="approved" text="approved"> Approved </option>
-        </select>
-      </form>
-      <br />
-      <p style="color:red"><i>Submitted - pending request that need approve or decline <br/>
-        Declined - declined registration <br/>
-        Approved - aprroved registration</i>
-      </p>
-      <br /><br />
-      <div id="filteredOwnerData" th:if="${ownerStatus}">
-        <h5>Filtered PetOwner for <span th:text="${ownerStatus}"></span> </h5>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Owner First Name</th>
-              <th>Owner Last Name</th>
-              <th>Registration Status</th>
-              <th th:if="${ownerStatus}==submitted">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="owner:${filteredOwner}">
-              <td th:text="${owner.firstName}"></td>
-              <td th:text="${owner.lastName}"></td>
-              <td th:text="${owner.status}"></td>
-              <td th:if="${owner.status == 'submitted'}">
-                <form action="/approve-owner" method="post" id="approveOwnerForm">
-                  <input type="hidden" name="ownerId" th:value="${owner.userId}" />
-                  <div class="btn-group">
-                    <span style="display: inline-block; margin-right: 5px;">
-                      <button type="submit" name="ownerStatus" value="approved" class="btn btn-primary btn-sm">Approve</button>
-                    </span>
-                    <span style="display: inline-block;">
-                      <button type="submit" name="ownerStatus" value="declined" class="btn btn-secondary btn-sm">Decline</button>
-                    </span>
-                </form>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <!-- Display filtered owners based on the registration status -->
+  <div id="ownerDropdown" class="sub-div">
+    <h5>To approve pet owner's registration</h5>
+    <ol>
+      <li>Select "Submitted" from the dropdown list</li>
+      <li>Click "List Owner by Status" button</li>
+      <li>Click "Approve" or "Decline" for the submitted registration. This actions will update the owner's status.</li>
+      <li>Select "Approved" or "Declined" option to view the updated result list.</li>
+    </ol>
 
-    <!-- Display filtered pets based on the status -->
-    <div id="statusDropdown" class="sub-div">
-      <form action="/manager" method="get" id="statusForm">
-        <button type="button" onclick="submitStatus()" class="nav">List Pets by Status</button>
-        <br />
-        <select name="status" id="adoptStatusDropdown" required>
-          <option value="" disabled selected>--select--</option>
-          <option value="pending" text="pending"> Pending </option>
-          <option value="available" text="available"> Available </option>
-          <option value="adopted" text="adopted"> Adopted </option>
-        </select>
-      </form>
+    <form action="/manager" method="get" id="ownerStatusForm">
+      <button type="button" onclick="submitOwnerStatus()" class="nav">List Owners by Status</button>
       <br />
-      <p style="color:red"><i>Pending - adopt reqeust pending and need approve or decline <br/>
+      <select name="ownerStatus" id="registrationStatusDropdown" required>
+        <option value="" disabled selected>--select--</option>
+        <option value="submitted" text="submitted"> Submitted </option>
+        <option value="declined" text="declined"> Declined </option>
+        <option value="approved" text="approved"> Approved </option>
+      </select>
+    </form>
+    <br />
+    <p style="color:red"><i>Submitted - pending request that need approve or decline <br />
+        Declined - declined registration <br />
+        Approved - aprroved registration</i>
+    </p>
+    <br /><br />
+    <div id="filteredOwnerData" th:if="${ownerStatus}">
+      <h5>Filtered PetOwner for <span th:text="${ownerStatus}"></span> </h5>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Owner First Name</th>
+            <th>Owner Last Name</th>
+            <th>Registration Status</th>
+            <th th:if="${ownerStatus}==submitted">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="owner:${filteredOwner}">
+            <td th:text="${owner.firstName}"></td>
+            <td th:text="${owner.lastName}"></td>
+            <td th:text="${owner.status}"></td>
+            <td th:if="${owner.status == 'submitted'}">
+              <form action="/approve-owner" method="post" id="approveOwnerForm">
+                <input type="hidden" name="ownerId" th:value="${owner.userId}" />
+                <div class="btn-group">
+                  <span style="display: inline-block; margin-right: 5px;">
+                    <button type="submit" name="ownerStatus" value="approved"
+                      class="btn btn-primary btn-sm">Approve</button>
+                  </span>
+                  <span style="display: inline-block;">
+                    <button type="submit" name="ownerStatus" value="declined"
+                      class="btn btn-secondary btn-sm">Decline</button>
+                  </span>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Display filtered pets based on the status -->
+  <div id="statusDropdown" class="sub-div">
+    <h5>To schedule adopt request meeting</h5>
+    <ol>
+      <li>Select "Pending" from the dropdown list</li>
+      <li>Click "List Pets by Status" button</li>
+      <li>Click "Approve" or "Decline" for pending request. Both action will launch the mail service to send email to
+        the applicant owner</li>
+    </ol>
+    <form action="/manager" method="get" id="statusForm">
+      <button type="button" onclick="submitStatus()" class="nav">List Pets by Status</button>
+      <br />
+      <select name="status" id="adoptStatusDropdown" required>
+        <option value="" disabled selected>--select--</option>
+        <option value="pending" text="pending"> Pending </option>
+        <option value="available" text="available"> Available </option>
+        <option value="adopted" text="adopted"> Adopted </option>
+      </select>
+    </form>
+    <br />
+    <p style="color:red"><i>Pending - adopt reqeust pending and need approve or decline <br />
         Adopted - pets adopted by owner <br />
         Waiting - pets are waiting for new owner</i>
-      </p>
+    </p>
 
-      <br /><br />
-      <div id="filteredData" th:if="${status}">
-        <h5>Filtered Pets for <span th:text="${status}"></span> </h5>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Pet Name</th>
-              <th>Pet Species</th>
-              <th>Pet Color</th>
-              <th>Pet Size</td>
-              <th>Adopt Status</th>
-              <th>Manage By</th>
-              <th th:if="${status}==pending">Owner's name</th>
-              <th th:if="${status}==pending">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="pet:${filteredPets}">
-              <td th:text="${pet.petName}"></td>
-              <td th:text="${pet.petSpecies}"></td>
-              <td th:text="${pet.petColor}"></td>
-              <td th:text="${pet.petSize}"></td>
-              <td th:text="${pet.adoptStatus}"></td>
-              <td th:text="${pet.employee.lastName}"></td>
-              <td th:if="${status}=='pending'">
-                  <p th:text="${pet.petOwner.firstName} + ' '+ ${pet.petOwner.lastName}"></p>
-              </td>
-              <td th:if="${pet.adoptStatus == 'pending'}">
-                  <input type="hidden" name="petId" th:value="${pet.petId}" />
-                  <div class="btn-group">
-                    <span style="display: inline-block; margin-right: 5px;">
-                      <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-primary btn-sm">Approve</a>
-                    </span>
-                    <span style="display: inline-block;">
-                      <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-secondary btn-sm">Decline</a>
-                    </span>
-                  </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <br /><br />
+    <div id="filteredData" th:if="${status}">
+      <h5>Filtered Pets for <span th:text="${status}"></span> </h5>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Pet Name</th>
+            <th>Pet Species</th>
+            <th>Pet Color</th>
+            <th>Pet Size</td>
+            <th>Adopt Status</th>
+            <th>Manage By</th>
+            <th th:if="${status}==pending">Owner's name</th>
+            <th th:if="${status}==pending">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="pet:${filteredPets}">
+            <td th:text="${pet.petName}"></td>
+            <td th:text="${pet.petSpecies}"></td>
+            <td th:text="${pet.petColor}"></td>
+            <td th:text="${pet.petSize}"></td>
+            <td th:text="${pet.adoptStatus}"></td>
+            <td th:text="${pet.employee.lastName}"></td>
+            <td th:if="${status}=='pending'">
+              <p th:text="${pet.petOwner.firstName} + ' '+ ${pet.petOwner.lastName}"></p>
+            </td>
+            <td th:if="${pet.adoptStatus == 'pending'}">
+              <input type="hidden" name="petId" th:value="${pet.petId}" />
+              <div class="btn-group">
+                <span style="display: inline-block; margin-right: 5px;">
+                  <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-primary btn-sm">Approve</a>
+                </span>
+                <span style="display: inline-block;">
+                  <a th:attr="href='mailto:' + ${pet.petOwner.email}" class="btn btn-secondary btn-sm">Decline</a>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
 
 </body>
