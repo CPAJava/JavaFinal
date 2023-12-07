@@ -69,6 +69,17 @@ public class PetOwner {
         this.preference = preference;
         this.email = email;
     }
+    public PetOwner(String userId, String firstName, String lastName, String password, String status, String email,
+            Boolean preference,PetPreferences petPreferences) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.status = status;
+        this.preference = preference;
+        this.email = email;
+        this.petPreferences=petPreferences;
+    }
 
     @Override
     public boolean equals(Object obj) {
