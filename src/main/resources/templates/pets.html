@@ -49,19 +49,19 @@
     <h3>Create a new pet</h3>
     <form action="/add-pet" method="post" th:object="${pet}">
         <label>Pet Name</label>
-        <input type="text" name="petName" th:field="*{petName}">
+        <input type="text" name="petName" th:field="*{petName}" required>
         <br>
         <label>Pet Species</label>
-        <input type="text" name="petSpecies" th:field="*{petSpecies}">
+        <input type="text" name="petSpecies" th:field="*{petSpecies}" required>
         <br>
         <label>Pet Color</label>
-        <input type="text" name="petColor" th:field="*{petColor}">
+        <input type="text" name="petColor" th:field="*{petColor}" required>
         <br>
         <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}">
+        <input type="text" name="petSize" th:field="*{petSize}" required>
         <br>
         <label>Adoption Status</label>
-        <input type="text" name="adoptStatus" th:field="*{adoptStatus}">
+        <input type="text" name="adoptStatus" th:field="*{adoptStatus}" required>
         <br>
         <label>Staff Name</label>
         <select id="userId" name="userId">
