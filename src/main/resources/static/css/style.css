@@ -1,13 +1,24 @@
 body{
   color:teal;
 }
+h1,.entry{
+  text-align: center;
+}
 
+.petOwnerLogin h2,label{
+  padding-left: 10px;
+}
+.petOwnerLogin label{
+  width: 100px;
+}
 label{
   width:175px;
   display: inline-block   ;
   padding: 10px;
 }
-
+.login{
+ padding-left: 10px;
+}
 
 .left
 {
