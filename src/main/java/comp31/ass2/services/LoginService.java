@@ -11,6 +11,25 @@ import comp31.ass2.model.entity.Pet;
 import comp31.ass2.repos.EmployeeRepo;
 import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
+/*
+ * Author: Manlin Mao
+ * Date: 2023-12-06
+ *
+ * Class/File: LoginService.java
+ *
+ * Additional context:
+ * The "LoginService" class is a service component in the application responsible for handling user authentication
+ * and authorization. It interacts with the "PetOwnerRepo," "PetsRepo," and "EmployeeRepo" repositories to perform
+ * operations related to pet owners and employees.
+ *
+ * The service includes methods for retrieving all pets, finding a pet owner by user ID, finding an employee by user ID,
+ * and validating user credentials for both pet owners and employees. The validation process involves checking the
+ * provided credentials against stored data in the repositories and redirecting users to specific pages based on their
+ * roles and approval status.
+ *
+ * This class plays a crucial role in ensuring secure access to different parts of the application based on user roles
+ * and status, contributing to the overall functionality of the login and authentication system.
+ */
 
 @Service
 public class LoginService {

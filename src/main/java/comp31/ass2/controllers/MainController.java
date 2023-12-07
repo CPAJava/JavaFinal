@@ -75,8 +75,11 @@ public class MainController {
     return "redirect:/manager";
   }
 
-  // ********************************************** Pet Owner related controllers
-  // (Manlin):
+ /*
+ * Author: Manlin Mao
+ * Date: 2023-12-06
+ * Pet Owner Controllers
+ */
 
   @GetMapping("success")
   public String showSuccessPage() {
