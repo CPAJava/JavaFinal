@@ -22,6 +22,8 @@ import comp31.ass2.services.EmployeeService;
 import comp31.ass2.services.LoginService;
 import comp31.ass2.services.PetOwnerService;
 import comp31.ass2.services.RegisterService;
+import comp31.ass2.services.StaffService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -31,15 +33,18 @@ public class MainController {
   LoginService loginService;
   RegisterService registerService;
   PetOwnerService petOwnerService;
+  //Adding staffService by Xuancheng
+  StaffService staffService;
 
   Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
   public MainController(EmployeeService employeeService, LoginService loginService,
-      RegisterService registerService, PetOwnerService petOwnerService) {
+      RegisterService registerService, PetOwnerService petOwnerService, StaffService staffService) {
     this.employeeService = employeeService;
     this.loginService = loginService;
     this.registerService = registerService;
     this.petOwnerService = petOwnerService;
+    this.staffService =staffService;
   }
 
   @GetMapping("/")
@@ -215,4 +220,128 @@ public class MainController {
     }
   }
 
+  // ********************************************** Staff/Pets related controllers
+  // (Xuancheng):
+  //getStaffMain() was modified from getRoot() controller
+  @GetMapping({"/showAllPets", "/add-pet"})
+    public String getStaffMain(@RequestParam(defaultValue = "all") String selectedSpecies, @RequestParam(defaultValue = "") String staff, Model model) {
+        model.addAttribute("pet", new Pet());
+        // List<Pets> pets = staffService.findAllPets();
+        // model.addAttribute("allPets", pets); 
+        model.addAttribute("speciesAll", staffService.findAllPetSpecies());
+        model.addAttribute("staffAll", staffService.findAllStaffs());
+        if (selectedSpecies.equals("all")) {
+            model.addAttribute("allPets", staffService.findAllPets());
+            model.addAttribute("title", "All");
+        } else {
+            model.addAttribute("allPets", staffService.findByPetSpecies(selectedSpecies));
+            model.addAttribute("title", selectedSpecies);
+        }
+        model.addAttribute("staffInCharge", staffService.findByUserId(staff));
+
+        return "pets";
+    }
+
+    @PostMapping("/add-pet")
+    public String postRegister(Model model, Pet newPet, @RequestParam(defaultValue = "") String userId) {
+
+        //model.addAttribute("pet", new Pet());
+
+        Employee employeeInCharge = staffService.findByUserId(userId);
+        //PetOwner dummyOwner = new PetOwner("dummy","dummy","dummy","dummy","dummy","dummy",false);
+        //dummyOwner.setPreferredPet(newPet);
+        System.out.println(userId);
+        //System.out.println(dummyOwner);
+        newPet.setEmployee(employeeInCharge);
+        newPet.setAdoptStatus("available");
+        //newPet.setPetOwner(dummyOwner);
+        staffService.insertPet(newPet);
+        System.out.println(newPet);
+        return "redirect:/add-pet";
+    }
+
+    @GetMapping("/delete-pet")
+    public String deletePetByName(Model model, @RequestParam(defaultValue = "") String petName) {
+        staffService.deleteByPetName(petName);
+        model.addAttribute("pet", new Pet());
+
+        return "redirect:/add-pet";
+    }
+
+    @GetMapping({"/updatePetPage", "/find-pet"})
+    public String findPetByName(Model model, @RequestParam(defaultValue = "") String petName) {
+        //logger.info("pets------", petName);
+        // System.out.println(petName);
+        model.addAttribute("petName", petName);
+        //List<Pets> foundPet = staffService.findBypetName(petName);
+        //logger.info("pets------", foundPet);
+        model.addAttribute("ownerAll", staffService.findAllOwners());
+        //Pet found = new Pet();
+        Pet found = staffService.findByPetName(petName);
+        //PetOwner owner = found.getPetOwner();
+        //System.out.println(found);
+        if (petName.isEmpty()) {
+          Pet empty = new Pet();
+          // Pet empty
+          model.addAttribute("found", empty);
+          model.addAttribute("StaffInCharge","");
+          model.addAttribute("currentOwner", " ");
+        } else {
+            if (found == null){
+            Pet foundEmpty = new Pet();
+            // found = staffService.findByPetName(petName);
+            model.addAttribute("found", foundEmpty);
+            model.addAttribute("StaffInCharge","");
+            model.addAttribute("currentOwner", "-");
+            } else {
+              PetOwner owner = found.getPetOwner();
+              if (owner == null){
+                model.addAttribute("found", found);
+                model.addAttribute("StaffInCharge",found.getEmployee().getUserId());
+                model.addAttribute("currentOwner", "-");
+              }
+              else {
+                model.addAttribute("found", found);
+                model.addAttribute("StaffInCharge",found.getEmployee().getUserId());
+                model.addAttribute("currentOwner", found.getPetOwner().getUserId());
+              }
+            // model.addAttribute("found", found);
+            // model.addAttribute("StaffInCharge",found.getEmployee().getUserId());
+            // model.addAttribute("currentOwner", found.getPetOwner().getUserId());
+            // PetOwner owner = found.getPetOwner();
+            // if (owner == null) {
+            //   model.addAttribute("currentOwner", found.getPetOwner().getUserId());
+            // }
+            // else {
+            //   model.addAttribute("currentOwner", "-");
+            // }
+            //model.addAttribute("currentOwner", found.getPetOwner().getUserId());
+            }
+          // PetOwner owner = found.getPetOwner();
+          // // System.out.println(owner.getUserId());
+          // if (owner == null) {
+          //   model.addAttribute("currentOwner", "-");
+          // } else {
+          //   model.addAttribute("currentOwner", found.getPetOwner().getUserId());
+          // }
+
+        }
+        return "updatePets";
+    }
+
+    @PostMapping("/update-pet")
+    public String updatePetInfo(Model model, Pet newPet, @RequestParam(defaultValue = "") String ownerId, @RequestParam(defaultValue = "") String staffId) {
+
+        model.addAttribute("found", new Pet());
+        PetOwner updatedPetOwner = staffService.findOwnerByUserId(ownerId);
+        Employee updatedEmployee = staffService.findByUserId(staffId);
+        //System.out.println(staffId);
+        //System.out.println(updatedEmployee);
+        newPet.setPetOwner(updatedPetOwner);
+        newPet.setEmployee(updatedEmployee);
+        staffService.insertPet(newPet);
+        System.out.println(newPet);
+
+        return "redirect:/find-pet";
+    }
 }

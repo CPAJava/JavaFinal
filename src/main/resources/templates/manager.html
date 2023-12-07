@@ -122,6 +122,7 @@
               <td th:text="${pet.petSize}"></td>
               <td th:text="${pet.adoptStatus}"></td>
               <td th:text="${pet.employee.lastName}"></td>
+              <!-- <td th:text="${pet.employee}"></td> -->
               <td th:if="${status}=='pending'">
                   <p th:text="${pet.petOwner.firstName} + ' '+ ${pet.petOwner.lastName}"></p>
               </td>

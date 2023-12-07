@@ -39,7 +39,8 @@
             <td th:text="${pet.petSpecies}"></td>
             <td th:text="${pet.petColor}"></td>
             <td th:text="${pet.petSize}"></td>
-            <td th:text="${pet.status}"></td>
+            <td th:text="${pet.adoptStatus}"></td>
+            <!-- <td th:text="${pet.employee.userid}"></td> -->
 
         </tr>
     </table>
@@ -48,16 +49,26 @@
     <h3>Create a new pet</h3>
     <form action="/add-pet" method="post" th:object="${pet}">
         <label>Pet Name</label>
-        <input type="text" name="petName" th:field="*{petName}">
+        <input type="text" name="petName" th:field="*{petName}" required>
         <br>
         <label>Pet Species</label>
-        <input type="text" name="petSpecies" th:field="*{petSpecies}">
+        <input type="text" name="petSpecies" th:field="*{petSpecies}" required>
         <br>
         <label>Pet Color</label>
-        <input type="text" name="petColor" th:field="*{petColor}">
+        <input type="text" name="petColor" th:field="*{petColor}" required>
         <br>
         <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}">
+        <input type="text" name="petSize" th:field="*{petSize}" required>
+        <br>
+        <label>Adoption Status</label>
+        <input type="text" name="adoptStatus" th:field="*{adoptStatus}" required>
+        <br>
+        <label>Staff Name</label>
+        <select id="userId" name="userId">
+            <!-- <option value="all">All</option> -->
+            <option th:each="staff: ${staffAll}" th:value="${staff}" th:text="${staff}">
+            </option>
+        </select>
         <br>
         <button>Add</button>
     </form>
@@ -67,18 +78,18 @@
         <label>Pet Name</label>
         <input type="text" name="petName" th:field="*{petName}">
         <br>
-        <label>Pet Species</label>
+        <!-- <label>Pet Species</label>
         <input type="text" name="petSpecies" th:field="*{petSpecies}">
         <br>
         <label>Pet Color</label>
         <input type="text" name="petColor" th:field="*{petColor}">
         <br>
         <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}">
+        <input type="text" name="petSize" th:field="*{petSize}"> -->
         <br>
         <button>Delete</button>
     </form>
 
-    
+    <h3><a href="/updatePetPage">Update Pet Record</a></h3h3>
 </body>
 </html>
