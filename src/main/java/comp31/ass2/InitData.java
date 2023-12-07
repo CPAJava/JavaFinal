@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import comp31.ass2.model.entity.Employee;
 import comp31.ass2.model.entity.Pet;
 import comp31.ass2.model.entity.PetOwner;
-
+import comp31.ass2.model.entity.PetPreferences;
 import comp31.ass2.repos.EmployeeRepo;
 import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetsRepo;
@@ -35,12 +35,12 @@ public class InitData implements CommandLineRunner {
         employeeRepo.save(emp2);
         employeeRepo.save(emp3);
 
-        PetOwner owner1 = new PetOwner("ashly", "Ashly", "Black", "123", "approved", "ash@fake.com", false);
+        PetOwner owner1 = new PetOwner("ashly", "Ashly", "black", "123", "approved", "ash@fake.com", false);
         PetOwner owner2 = new PetOwner("bill", "Bill", "Jack", "abc", "submitted", "bill@fake.com", false);
-        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "submitted", "lil@fake.com", false);
-        PetOwner owner4 = new PetOwner("cathy", "Cathy", "White", "123", "submitted", "cathy@fake.com", false);
-        PetOwner owner5 = new PetOwner("dale", "Dale", "Bill", "abc", "submitted", "dale@fake.com", true);
-        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "submitted", "phil@fake.com", false);
+        PetOwner owner3 = new PetOwner("lily", "Lily", "Smith", "234", "approved", "lil@fake.com", true,new PetPreferences("dog","white","large"));
+        PetOwner owner4 = new PetOwner("cathy", "cathy", "white", "123", "approved", "cathy@fake.com",true, new PetPreferences("dog","white","large"));
+        PetOwner owner5 = new PetOwner("dale", "Dale", "Bill", "abc", "approved", "dale@fake.com", true,new PetPreferences("cat","black","small"));
+        PetOwner owner6 = new PetOwner("phil", "Phil", "T", "234", "approved", "phil@fake.com", true,new PetPreferences("dog","black","large"));
 
         petOwnerRepo.save(owner1);
         petOwnerRepo.save(owner2);
@@ -50,14 +50,18 @@ public class InitData implements CommandLineRunner {
         petOwnerRepo.save(owner5);
         petOwnerRepo.save(owner6);
 
-        Pet pet1=new Pet("panC","Pan Cake", "Cat","Black", "Small",owner1,emp1,"pending");
-        Pet pet2=new Pet("Gri","Grizzly", "Dog","Brown", "Large",emp2, "available");
-        Pet pet3=new Pet("Mus","Mushroom", "Cat","Yellow", "Medium",emp3,"available");
-        Pet pet4=new Pet("Fur", "Fur", "Dog","White", "Large", owner4, emp1,"adopted");
-        Pet pet5=new Pet("Pep","Pepper", "Cat","Black", "Small",owner5,emp1,"pending");
-        Pet pet6=new Pet("Oll ","Ollie", "Dog","Brown", "Large", owner6,emp2, "pending");
-        Pet pet7=new Pet("Man","Mango", "Cat","Yellow", "Medium",emp3,"available");
-        Pet pet8=new Pet("Cia","Ciao", "Dog","White", "Large", owner3, emp1,"pending");
+        Pet pet1=new Pet("panC","Pan Cake", "cat","black", "small",emp1,"available");
+        Pet pet2=new Pet("Gri","Grizzly", "dog","black", "large",emp2, "available");
+        Pet pet3=new Pet("Mus","Mushroom", "cat","yellow", "medium",emp3,"available"); 
+        Pet pet7=new Pet("Man","Mango", "cat","yellow", "medium",emp3,"available");
+
+       
+        Pet pet4=new Pet("Fur", "Fur", "dog","white", "large", owner4, emp1,"adopted");
+        Pet pet5=new Pet("Pep","Pepper", "cat","black", "small",owner5,emp1,"pending");
+        Pet pet6=new Pet("Oll ","Ollie", "dog","black", "large", owner6,emp2, "pending");
+        Pet pet8=new Pet("Cia","Ciao", "dog","white", "large", owner3, emp1,"pending");
+        
+
         petsRepo.save(new Pet("ash","ash", "dog", "black", "big", emp1, "available"));
         petsRepo.save(new Pet("bill","bill", "cat", "orange", "medium", emp2, "available"));
         petsRepo.save(new Pet("lil","lil", "bird", "white", "small", emp3, "available"));

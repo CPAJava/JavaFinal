@@ -1,3 +1,18 @@
+<!--
+ * Author: Manlin Mao
+ * Date: 2023-12-06
+ *
+ * File: petOwnerPage.html
+ *
+ * Additional context:
+ * This HTML file represents the Pet Owner's page in the application, displaying information about available pets
+ * and adoption requests. The page includes conditional rendering based on whether preferences are set for the
+ * pet owner. If preferences are set, it shows a table of available pets for adoption and a table of the owner's
+ * adoption requests. If preferences are not set, it provides a form to set preferences for the pet owner.
+ *
+ * Thymeleaf expressions are used for dynamic content, such as iterating over lists and setting form attributes.
+ * The page also includes a link to go back to the login page.
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -147,6 +162,15 @@
         required
       />
       <label for="white">White</label>
+      <input
+        type="radio"
+        id="yellow"
+        name="petColor"
+        th:field="*{petColor}"
+        value="yellow"
+        required
+      />
+      <label for="yellow">Yellow</label>
 
       <br />
 
