@@ -33,11 +33,11 @@ public class StaffService {
     }
     
     public Pet findByPetName(String petName) {
-        Pet foundPet = new Pet();
+        Pet foundPet = null;
         List<Pet> tempFound = petsRepo.findByPetName(petName);
         if (!tempFound.isEmpty()){
             foundPet = tempFound.get(0);
-        }
+        }        
         return foundPet;
         //return petsRepo.findByPetName(petName);
     }
