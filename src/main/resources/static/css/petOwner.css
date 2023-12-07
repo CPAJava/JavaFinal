@@ -8,7 +8,7 @@
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right,#ffffff, #c2c2c2, #888888, #3d3d3d);
     }
-    .btn-login,.btn-outline-danger{
+    .btn-submit{
         font-family: "Poppins", sans-serif;
         text-transform: uppercase;
         font-weight: 500;
@@ -23,11 +23,9 @@
         color: #fff;
     }
 
-    .error-message{
-        color: red;
-        font-size: 13px;
+   .options{
+        font-weight:600;
     }
-
     @media (min-width: 868px) {
     .gradient-form {
     height: 130vh !important;

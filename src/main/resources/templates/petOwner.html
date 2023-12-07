@@ -1,204 +1,244 @@
 <!--
- * Author: Manlin Mao
- * Date: 2023-12-06
- *
- * File: petOwnerPage.html
- *
- * Additional context:
- * This HTML file represents the Pet Owner's page in the application, displaying information about available pets
- * and adoption requests. The page includes conditional rendering based on whether preferences are set for the
- * pet owner. If preferences are set, it shows a table of available pets for adoption and a table of the owner's
- * adoption requests. If preferences are not set, it provides a form to set preferences for the pet owner.
- *
- * Thymeleaf expressions are used for dynamic content, such as iterating over lists and setting form attributes.
- * The page also includes a link to go back to the login page.
--->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PetOwnerPage</title>
-    <style>
-        table.border {border: black solid; border-collapse: collapse; margin: auto;}
-        table.border td {border: black solid thin}
-        table.border th {border: black solid thin}
-        table.noborder td {border: none}
+   * Author: Manlin Mao
+   * Date: 2023-12-06
+   *
+   * File: petOwnerPage.html
+   *
+   * Additional context:
+   * This HTML file represents the Pet Owner's page in the application, displaying information about available pets
+   * and adoption requests. The page includes conditional rendering based on whether preferences are set for the
+   * pet owner. If preferences are set, it shows a table of available pets for adoption and a table of the owner's
+   * adoption requests. If preferences are not set, it provides a form to set preferences for the pet owner.
+   *
+   * Thymeleaf expressions are used for dynamic content, such as iterating over lists and setting form attributes.
+   * The page also includes a link to go back to the login page.
+   -->
+   <!DOCTYPE html>
+   <html lang="en">
+      <head>
+         <meta charset="UTF-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+         <title>PetOwnerPage</title>
+         <style>
+            table.border {border: black solid; border-collapse: collapse; margin: auto;}
+            table.border td {border: black solid thin}
+            table.border th {border: black solid thin}
+            table.noborder td {border: none}
+         </style>
+         <link rel="stylesheet" type="text/css" th:href="@{/css/petOwner.css}" />
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      </head>
+      <body>
+         <div th:if="${isPreferenceSet}">
+            <h1>Pet Owner's Page</h1>
+            <table class="border">
+               <tr>
+               <thead>
+                  <tr>
+                     <th colspan="5">Pets</th>
+                  </tr>
+                  <tr>
+                     <th>Id</th>
+                     <th>Pet Name</th>
+                     <th>Species</th>
+                     <th>Color</th>
+                     <th>Size</th>
+                     <th>Request</th>
+                  </tr>
+               </thead>
+               <tr th:each="pet:${pets}">
+                  <td th:text="${pet.id}" ></td>
+                  <td th:text="${pet.petName}"></td>
+                  <td th:text="${pet.petSpecies}"></td>
+                  <td th:text="${pet.petColor}"></td>
+                  <td th:text="${pet.petSize}"></td>
+                  <form action="/adopt" method="post">
+                     <td> <input type="hidden" id="petId"  name="petId" th:value="${pet.id}" />
+                        <button type="submit">Adopt</button>
+                     </td>
+                  </form>
+               </tr>
+               </tr>
+            </table>
+            <div th:if="${pendingPets}!=null">
+               <h2>Your Adoption Requests</h2>
+               <table class="border">
+                  <tr>
+                  <thead>
+                     <tr>
+                        <th colspan="7">Pet Adoption Requests</th>
+                     </tr>
+                     <tr>
+                        <th>Id</th>
+                        <th>Pet Name</th>
+                        <th>Species</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                        <th>Owner's Name</th>
+                     </tr>
+                  </thead>
+                  <tr th:each="pet:${pendingPets}">
+                     <td th:text="${pet.id}"></td>
+                     <td th:text="${pet.petName}"></td>
+                     <td th:text="${pet.petSpecies}"></td>
+                     <td th:text="${pet.petColor}"></td>
+                     <td th:text="${pet.petSize}"></td>
+                     <td th:text="${pet.adoptStatus}"></td>
+                     <td th:text="${pet.petOwner.firstName}"></td>
+                  </tr>
+                  </tr>
+               </table>
+            </div>
+         </div>
+         <div th:unless="${isPreferenceSet}">
+         <section class="h-100 gradient-form" style="background-color: #eee;">
+            <div class="container py-5 h-100">
+               <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col-xl-10">
+                     <div class="card rounded-3 text-black">
+                        <div class="row g-0">
+                           <div class="col-lg-6">
+                              <div class="card-body p-md-5 mx-md-4">
+                                 <div class="text-center">
+                                    <img src="https://thumbs.dreamstime.com/b/big-group-cute-pets-isolated-white-background-70007041.jpg"
+                                       style="width: 185px;" alt="logo">
+                                    <h4 class="mt-1 mb-5 pb-1">Set Your Preferences</h4>
+                                 </div>
+                                 <form action="/petOwner" 
+                                    method="post"
+                                    th:object="${preferredPet}"
+                                    th:modelAttribute="preferredPet">
+                                    <p>Please select one for each of the following</p>
+                                    <label class="options" for="petSpecies">Pet Species:</label>
+                                    <div class="form-outline mb-1">
+                                       <input
+                                          type="radio"
+                                          id="dog"
+                                          name="petSpecies"
+                                          th:field="*{petSpecies}"
+                                          value="dog"
+                                          required
+                                          />
+                                       <label for="dog">Dog</label>
+                                    </div>
+                                    <div class="form-outline mb-1">
+                                       <input
+                                          type="radio"
+                                          id="cat"
+                                          name="petSpecies"
+                                          th:field="*{petSpecies}"
+                                          value="cat"
+                                          required
+                                          />
+                                       <label for="cat">Cat</label>
+                                    </div>
+                                    <div class="form-outline mb-1">
+                                       <input
+                                          type="radio"
+                                          id="bird"
+                                          name="petSpecies"
+                                          th:field="*{petSpecies}"
+                                          value="bird"
+                                          required
+                                          />
+                                       <label for="bird">Bird</label>
+                                    </div>
+                                    <br />
+                                    <label class="options" for="petColor">Pet Color:</label>
+                                    <div class="form-outline mb-1">
+                                       <input
+                                          type="radio"
+                                          id="black"
+                                          name="petColor"
+                                          th:field="*{petColor}"
+                                          value="black"
+                                          required
+                                          />
+                                       <label for="black">Black</label>
+                                    </div>
+                                       <div class="form-outline mb-1">
+                                          <input
+                                             type="radio"
+                                             id="white"
+                                             name="petColor"
+                                             th:field="*{petColor}"
+                                             value="white"
+                                             required
+                                             />
+                                          <label for="white">White</label>
+                                       </div>
+                                       <div class="form-outline mb-1">
+                                          <input
+                                             type="radio"
+                                             id="yellow"
+                                             name="petColor"
+                                             th:field="*{petColor}"
+                                             value="yellow"
+                                             required
+                                             />
+                                          <label for="yellow">Yellow</label>
+                                       </div>
+                                       <br />
+                                       <label class="options" for="petSize">Pet Size:</label>
+                                       <div class="form-outline mb-1">
+                                          <input
+                                             type="radio"
+                                             id="small"
+                                             name="petSize"
+                                             th:field="*{petSize}"
+                                             value="small"
+                                             required
+                                             />
+                                          <label for="small">Small</label>
+                                       </div>
+                                       <div class="form-outline mb-1">
+                                          <input
+                                             type="radio"
+                                             id="medium"
+                                             name="petSize"
+                                             th:field="*{petSize}"
+                                             value="medium"
+                                             required
+                                             />
+                                          <label for="medium">Medium</label>
+                                       </div>
+                                       <div class="form-outline mb-1">
+                                          <input
+                                             type="radio"
+                                             id="large"
+                                             name="petSize"
+                                             th:field="*{petSize}"
+                                             value="large"
+                                             required
+                                             />
+                                          <label for="large">Large</label>
+                                       </div>
+                                       <br />
+                                       <div class="text-center pt-1 mb-5 pb-1">
+                                          <button class="btn-submit btn-block  gradient-custom-2 mb-3" type="submit">Submit</button>
+                                       </div>
+                                       <br>
+                                       <a href="/" class="home">To home page</a>
+                                 </form>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                 <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                    <h4 class="mb-4">Instructions for setting preferences:</h4>
+                                    <p class="small mb-0">2. Please set preferences to <b>small</b>,<b>white</b>,<b>bird</b> for testing purpose.</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+         </section>
+         </div>
         
-    </style>
-
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-  </head>
-  <body>
-    <div th:if="${isPreferenceSet}">
-    <h1>Pet Owner's Page</h1>
-
-    <table class="border">
-        <tr>
-            <thead>
-             
-                <tr><th colspan="5">Pets</th></tr>
-                <tr>
-                    <th>Id</th>
-                    <th>Pet Name</th>
-                    <th>Species</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Request</th>
-                  
-                </tr>
-            </thead>
-            
-            <tr th:each="pet:${pets}">
-                <td th:text="${pet.id}" ></td>
-                <td th:text="${pet.petName}"></td>
-                <td th:text="${pet.petSpecies}"></td>
-                <td th:text="${pet.petColor}"></td>
-                <td th:text="${pet.petSize}"></td>
-                <form action="/adopt" method="post">
-                <td> <input type="hidden" id="petId"  name="petId" th:value="${pet.id}" />
-                  <button type="submit">Adopt</button>
-                </td>
-              </form>
-            </tr>
-            
-       
-        </tr>
-        
-     
-    </table>
-    <div th:if="${pendingPets}!=null">
-    <h2>Your Adoption Requests</h2>
-
-    <table class="border">
-        <tr>
-            <thead>
-             
-                <tr><th colspan="7">Pet Adoption Requests</th></tr>
-                <tr>
-                    <th>Id</th>
-                    <th>Pet Name</th>
-                    <th>Species</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Status</th>
-                    <th>Owner's Name</th>
-                  
-                </tr>
-            </thead>
-            
-            <tr th:each="pet:${pendingPets}">
-                <td th:text="${pet.id}"></td>
-                <td th:text="${pet.petName}"></td>
-                <td th:text="${pet.petSpecies}"></td>
-                <td th:text="${pet.petColor}"></td>
-                <td th:text="${pet.petSize}"></td>
-                <td th:text="${pet.adoptStatus}"></td>
-                <td th:text="${pet.petOwner.firstName}"></td>
          
-            </tr>
-        </tr>
-
-    </table>
-
-  </div>
-  </div>
-
-  <div th:unless="${isPreferenceSet}">
-    <h1>Set Preferences</h1>
-    <form
-      action="/petOwner"
-      method="post"
-      th:object="${preferredPet}"
-      th:modelAttribute="preferredPet"
-    >
-      <label for="petSpecies">Pet Species:</label>
-      <input
-        type="radio"
-        id="dog"
-        name="petSpecies"
-        th:field="*{petSpecies}"
-        value="dog"
-        required
-      />
-      <label for="dog">Dog</label>
-      <input
-        type="radio"
-        id="cat"
-        name="petSpecies"
-        th:field="*{petSpecies}"
-        value="cat"
-        required
-      />
-      <label for="cat">Cat</label>
-      <input
-        type="radio"
-        id="bird"
-        name="petSpecies"
-        th:field="*{petSpecies}"
-        value="bird"
-        required
-      />
-      <label for="bird">Bird</label>
-
-      <br />
-
-      <label for="petColor">Pet Color:</label>
-      <input
-        type="radio"
-        id="black"
-        name="petColor"
-        th:field="*{petColor}"
-        value="black"
-        required
-      />
-      <label for="black">Black</label>
-      <input
-        type="radio"
-        id="white"
-        name="petColor"
-        th:field="*{petColor}"
-        value="white"
-        required
-      />
-      <label for="white">White</label>
-      <input
-        type="radio"
-        id="yellow"
-        name="petColor"
-        th:field="*{petColor}"
-        value="yellow"
-        required
-      />
-      <label for="yellow">Yellow</label>
-
-      <br />
-
-      <label for="petSize">Pet Size:</label>
-      <input
-        type="radio"
-        id="small"
-        name="petSize"
-        th:field="*{petSize}"
-        value="small"
-        required
-      />
-      <label for="small">Small</label>
-      <input
-        type="radio"
-        id="medium"
-        name="petSize"
-        th:field="*{petSize}"
-        value="medium"
-        required
-      />
-      <label for="medium">Medium</label>
-
-      <br />
-
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-  <a href="/">Back to login</a>
-  </body>
-</html>
+         <a href="/">Back to login</a>
+      </body>
+   </html>
