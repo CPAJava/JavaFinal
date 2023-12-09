@@ -1,3 +1,9 @@
+<!-- * Author: Xuancheng Li
+* Date: 2023-12-06
+*
+* Class/File: updatePets.html
+*
+* Serves as office staff 2nd page that surpport them to search spcific pet by name and then update its information.  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +12,7 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- a search function to find the pet to be updated -->
     <h3>Find Pet</h3>
     <form action="/find-pet" method="get" th:object="${found}">
         <label>Pet Name</label>
@@ -14,9 +21,7 @@
         
         <button>Search</button>
     </form>
-
-    <!-- <p th:text="${pet.petName}"></p> -->
-
+    <!-- table to display pets information as well as table to update pet information -->
     <h3>Update Pet Information</h3>
     <form action="/update-pet" method="post" th:object="${found}">
         <label>Pet ID</label>
@@ -37,11 +42,13 @@
         <label>Adoption Status</label>
         <input type="text" name="adoptStatus" th:field="*{adoptStatus}" required>
         <br>
+        
         <p th:text ="'Responsive Staff: ' + ${StaffInCharge}"></p>        
         <input type="text" id="staffId" name="staffId" th:value="${StaffInCharge}" readonly>
         <br>
         <h4 th:text="'Please select ' + ${currentOwner} + ' as pet owner, if owner is not changed.'"></h4>
-        <br>
+        <h5 style="color:red;" >Must choose the correct pet owner!</h5>
+
         <label>Pet Owner</label>
         <select id="ownerId" name="ownerId">
             <option value="">-</option>
