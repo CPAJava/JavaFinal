@@ -1,28 +1,10 @@
-/**
-* Template Name: Bethany
-* Updated: Sep 18 2023 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/bethany-free-onepage-bootstrap-theme/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
-/*--------------------------------------------------------------
-# General
---------------------------------------------------------------*/
 body {
     font-family: "Open Sans", sans-serif;
     color: #444444;
   }
   
-  a {
-    color: #009970;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: #00cc95;
-    text-decoration: none;
-  }
+ 
   
   h1,
   h2,
@@ -36,7 +18,7 @@ body {
 
   #hero {
     width: 100%;
-    height: 80vh;
+    height: 100vh;
     background: url("../img/animals.png") center center;
     background-size: cover;
     position: relative;
@@ -90,8 +72,8 @@ body {
   }
   
   #hero .btn-get-started:hover {
-    background: #009970;
-    border: 2px solid #009970;
+    background: #2980b9;
+    border: 2px solid #2980b9;
   }
   
   @media (min-width: 1024px) {

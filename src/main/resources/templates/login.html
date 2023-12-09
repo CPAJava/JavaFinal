@@ -24,12 +24,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://kit.fontawesome.com/e051e7d903.js" crossorigin="anonymous"></script>
     <title>Document</title>
   </head>
   <body>
 
 <div class="petOwnerLogin" th:if="${isOwner}">
-  <section class="h-100 gradient-form" style="background-color: #eee;">
+  <section class=" gradient-form" style="background-color: #eee;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-xl-10">
@@ -37,7 +38,7 @@
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="card-body p-md-5 mx-md-4">
-  
+                  <a href="/" class="home"><i class="fa-sharp fa-solid fa-house"></i>Home</a>
                   <div class="text-center">
                     <img src="https://media.istockphoto.com/id/1445196818/photo/group-of-cute-pets-on-white-background-banner-design.webp?b=1&s=170667a&w=0&k=20&c=iQ527QsrVbpECw-3b8GQVw0YD5FhBoorJzFPYQSw_40="
                       style="width: 185px;" alt="logo">
@@ -73,11 +74,12 @@
                     <div class="d-flex align-items-center justify-content-center pb-4">
                       <p class="mb-0 me-2">Don't have an account?</p>
                
-                      <a href="/register" class=" btn-outline-danger ml-2">Create new</a>
+                      <a href="/register" >Create new</a>
                     </div>
   
                     <br>
-                    <a href="/" class="home">To home page</a>
+                    
+                    
                   </form>
   
                 </div>
@@ -98,7 +100,7 @@
   </div>
   
   <div th:unless="${isOwner}">
-    <section class="h-100 gradient-form" style="background-color: #eee;">
+    <section class="gradient-form" style="background-color: #eee;">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-xl-10">
@@ -106,7 +108,7 @@
               <div class="row g-0">
                 <div class="col-lg-6">
                   <div class="card-body p-md-5 mx-md-4">
-    
+                    <a href="/" class="home"><i class="fa-sharp fa-solid fa-house"></i>Home</a>
                     <div class="text-center">
                       <img src="https://thumbs.dreamstime.com/b/big-group-cute-pets-isolated-white-background-70007041.jpg"
                         style="width: 185px;" alt="logo">

@@ -3,12 +3,17 @@
     background: #fccb90;
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #ffffff, #c2c2c2, #888888, #3d3d3d);
+    background: -webkit-linear-gradient(to right,  #2980b9, #2c3e50);
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right,#ffffff, #c2c2c2, #888888, #3d3d3d);
+    background: linear-gradient(to right, #2980b9, #2c3e50);
     }
-    .btn-login,.btn-outline-danger{
+    .home{
+       color:#2980b9;
+       font-size: 15px;
+       
+    }
+    .btn-login{
         font-family: "Poppins", sans-serif;
         text-transform: uppercase;
         font-weight: 500;
@@ -21,6 +26,12 @@
         margin: 10px;
         border: 2px solid #fff;
         color: #fff;
+    }
+
+
+    .btn-login:hover{
+        background: #2980b9;
+        border: 2px solid #2980b9;
     }
 
     .error-message{
