@@ -1,3 +1,11 @@
+<!-- * Author: Xuancheng Li
+* Date: 2023-12-06
+*
+* Class/File: pets.html
+*
+* Serves as office staff main page that will allow staff member to do basice CRUD function towards pets record database
+* Staff has the ability to filter pets by speices, add new pets, detele one pet by its name, and also search for one pet and 
+* then update its information  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +17,7 @@
 
     <h3>Filter Pets:</h3>
     <br>
-
+    <!-- table to display pets information -->
     <form action="/add-pet" method="get">
 
         <div>
@@ -40,12 +48,10 @@
             <td th:text="${pet.petColor}"></td>
             <td th:text="${pet.petSize}"></td>
             <td th:text="${pet.adoptStatus}"></td>
-            <!-- <td th:text="${pet.employee.userid}"></td> -->
 
         </tr>
     </table>
-    <br><br>
-
+    <!-- table to create a new pet by staff -->
     <h3>Create a new pet</h3>
     <form action="/add-pet" method="post" th:object="${pet}">
         <label>Pet Name</label>
@@ -65,31 +71,21 @@
         <br>
         <label>Staff Name</label>
         <select id="userId" name="userId">
-            <!-- <option value="all">All</option> -->
             <option th:each="staff: ${staffAll}" th:value="${staff}" th:text="${staff}">
             </option>
         </select>
         <br>
         <button>Add</button>
     </form>
-
+    <!-- to delete one pet by its name -->
     <h3>Delete Pet</h3>
+    <h4>Pets with status of "Adopted"& "Pending" cannot be deleted</h4>
     <form action="/delete-pet" method="get" th:object="${pet}">
         <label>Pet Name</label>
         <input type="text" name="petName" th:field="*{petName}">
-        <br>
-        <!-- <label>Pet Species</label>
-        <input type="text" name="petSpecies" th:field="*{petSpecies}">
-        <br>
-        <label>Pet Color</label>
-        <input type="text" name="petColor" th:field="*{petColor}">
-        <br>
-        <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}"> -->
-        <br>
         <button>Delete</button>
     </form>
 
-    <h3><a href="/updatePetPage">Update Pet Record</a></h3h3>
+    <h3><a href="/updatePetPage">Update Pet Record Page</a></h3h3>
 </body>
 </html>
