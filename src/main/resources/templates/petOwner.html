@@ -25,17 +25,19 @@
             table.border th {border: black solid thin}
             table.noborder td {border: none}
          </style>
+         <script src="https://kit.fontawesome.com/e051e7d903.js" crossorigin="anonymous"></script>
          <link rel="stylesheet" type="text/css" th:href="@{/css/petOwner.css}" />
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       </head>
       <body>
+         <h1>Pet Owner's Page<a href="/" class="home"><i class="fa-sharp fa-solid fa-house"></i>Home</a></h1> 
         <!--Table section-->
         <section id="hero" class="d-flex align-items-center">
           <div class="container text-center position-relative" data-aos="fade-in" data-aos-delay="200">
          <div th:if="${isPreferenceSet}">
-            <h1>Pet Owner's Page</h1>
-            <div class="container">
+            
+            <div class="">
                <div class="row">
                   <div class="col-md-offset-1 col-md-10">
                      <div class="panel">
@@ -80,7 +82,6 @@
             </div>
             <br>
             <div th:if="${pendingPets}!=null">
-               <h2>Your Adoption Requests</h2>
                <div class="container">
                   <div class="row">
                      <div class="col-md-offset-1 col-md-10">
@@ -271,6 +272,6 @@
                </div>
             </section>
          </div>
-         <a href="/">Back to login</a>
+      
       </body>
    </html>
