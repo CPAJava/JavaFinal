@@ -1,50 +1,160 @@
+<!--
+ * Author: Manlin Mao
+ * Date: 2023-12-06
+ *
+ * File: login.html
+ *
+ * Additional context:
+ * This HTML file represents the login page for the application, providing separate sections for pet owners and employees.
+ * The page includes forms for user login, capturing user ID and password. Conditional rendering is used to display the
+ * appropriate section based on the "isOwner" variable, which determines whether the user is a pet owner or an employee.
+ *
+ * For pet owners, the form is associated with the "/login?type=owner" endpoint, and a registration link is provided.
+ * Error messages are displayed if authentication fails, enhancing the user experience. The form for employees is associated
+ * with the "/login?type=employee" endpoint.
+ *
+ * This login page is an integral part of the user authentication and authorization process, providing a user-friendly
+ * interface for logging in as either a pet owner or an employee.
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Document</title>
   </head>
   <body>
-    <div th:if="${isOwner}">
-      <h1>Pet Owner Login Page</h1>
-      <h2>Login</h2>
-      <div th:if="${error}" class="error-message">
-        <p th:text="${error}"></p>
-      </div>
-      <form action="/login?type=owner" method="post" th:object="${petOwner}">
-        <label>User Id</label>
-        <input type="text" name="userId" required />
-        <br />
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          th:field="*{password}"
-          required
-        />
-        <button>Login</button>
-        <a href="/register">Register</a>
-      </form>
-    </div>
 
-    <div th:unless="${isOwner}">
-      <h1>Employee Login Page</h1>
-      <h2>Login</h2>
-      <form action="/login?type=employee" method="post" th:object="${employee}">
-        <label>User Id</label>
-        <input type="text" name="userId" required />
-        <br />
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          th:field="*{password}"
-          required
-        />
-        <br />
-        <button>Login</button>
-      </form>
+<div class="petOwnerLogin" th:if="${isOwner}">
+  <section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="card-body p-md-5 mx-md-4">
+  
+                  <div class="text-center">
+                    <img src="https://media.istockphoto.com/id/1445196818/photo/group-of-cute-pets-on-white-background-banner-design.webp?b=1&s=170667a&w=0&k=20&c=iQ527QsrVbpECw-3b8GQVw0YD5FhBoorJzFPYQSw_40="
+                      style="width: 185px;" alt="logo">
+                    <h4 class="mt-1 mb-5 pb-1">Pet Owner Login Page</h4>
+                  </div>
+  
+                  <form action="/login?type=owner" method="post" th:object="${petOwner}">
+                    <p>Please login to your account</p>
+                    <div th:if="${error}" class="error-message">
+                      <p th:text="${error}"></p>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <input type="text" name="userId" class="form-control"
+                         />
+                      <label class="form-label" >User Id</label>
+                    </div>
+  
+                    <div class="form-outline mb-4">
+                      <input  type="password"
+                      name="password"
+                      th:field="*{password}"
+                      required
+                       id="form2Example22" class="form-control" />
+                      <label  >Password</label>
+                    </div>
+  
+                    <div class="text-center pt-1 mb-5 pb-1">
+                      <button class=" btn-login btn-block  gradient-custom-2 mb-3" >Log
+                        in</button>
+                   
+                    </div>
+  
+                    <div class="d-flex align-items-center justify-content-center pb-4">
+                      <p class="mb-0 me-2">Don't have an account?</p>
+               
+                      <a href="/register" class=" btn-outline-danger ml-2">Create new</a>
+                    </div>
+  
+                    <br>
+                    <a href="/" class="home">To home page</a>
+                  </form>
+  
+                </div>
+              </div>
+              <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <h4 class="mb-4">Instructions for employee login:</h4>
+                  <p class="small mb-0">1. Please use <b>username:ashly password:123 </b> to login.</p>
+                  <p class="small mb-0">2. Please set preferences to <b>small</b>,<b>white</b>,<b>bird</b> for testing purpose.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
-</html>
+  </section>
+  </div>
+  
+  <div th:unless="${isOwner}">
+    <section class="h-100 gradient-form" style="background-color: #eee;">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-10">
+            <div class="card rounded-3 text-black">
+              <div class="row g-0">
+                <div class="col-lg-6">
+                  <div class="card-body p-md-5 mx-md-4">
+    
+                    <div class="text-center">
+                      <img src="https://thumbs.dreamstime.com/b/big-group-cute-pets-isolated-white-background-70007041.jpg"
+                        style="width: 185px;" alt="logo">
+                      <h4 class="mt-1 mb-5 pb-1">Employee Login Page</h4>
+                    </div>
+    
+                    <form action="/login?type=employee" method="post" th:object="${employee}">
+                      <p>Please login to your account</p>
+    
+                      <div class="form-outline mb-4">
+                        <input type="text" name="userId" required  class="form-control"
+                           />
+                        <label class="form-label" for="form2Example11">User Id</label>
+                      </div>
+    
+                      <div class="form-outline mb-4">
+                        <input type="password"
+                        name="password"
+                        th:field="*{password}"
+                        required
+                        id="form2Example22" class="form-control" />
+                        <label   >Password</label>
+                      </div>
+    
+                      <div class="text-center pt-1 mb-5 pb-1">
+                        <button class="btn-login btn-block  gradient-custom-2 mb-3" >Log
+                          in</button>
+                     
+                      </div>
+    
+                      
+                      <br>
+                      <a href="/" class="home">To home page</a>
+                    </form>
+    
+                  </div>
+                </div>
+                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                  <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                    <h4 class="mb-4">Instructions for employee login:</h4>
+                    <p class="small mb-0">Please use <b>username:sam password:sam </b> to login to manager's page.</p>
+                    <p class="small mb-0">Please use <b>username:olivia password:olivia</b> to login to staff's page.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

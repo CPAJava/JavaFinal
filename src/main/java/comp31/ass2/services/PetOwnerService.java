@@ -9,6 +9,23 @@ import comp31.ass2.repos.PetOwnerRepo;
 import comp31.ass2.repos.PetPreferencesRepo;
 import comp31.ass2.repos.PetsRepo;
 
+/*
+ * Author: Manlin Mao
+ * Date: 2023-12-06
+ *
+ * Class/File: PetOwnerService.java
+ *
+ * Additional context:
+ * The "PetOwnerService" class encapsulates the business logic related to pet owners in the application.
+ * It acts as an intermediary between the controller and the repository, orchestrating actions such as
+ * creating, updating, and deleting pet owners. This service class leverages the "PetOwnerRepo" interface
+ * for database operations, ensuring proper separation of concerns in the application architecture.
+ *
+ * The methods in this class handle various business rules, validations, and coordinate with the repository
+ * to perform operations on pet owner entities. It plays a crucial role in maintaining the integrity of
+ * pet owner data and facilitating communication between different layers of the application.
+ */
+
 @Service
 public class PetOwnerService {
     PetOwnerRepo petOwnerRepo;
@@ -21,7 +38,6 @@ public class PetOwnerService {
         this.petPreferencesRepo = petPreferencesRepo;
     }
 
-    // ****MOVE TO PET SERVICE!!!!! */
     public Pet findPetById(Integer petId) {
         return petsRepo.findById(petId).orElse(null);
     }

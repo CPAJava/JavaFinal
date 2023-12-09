@@ -1,0 +1,39 @@
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #fccb90;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #ffffff, #c2c2c2, #888888, #3d3d3d);
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right,#ffffff, #c2c2c2, #888888, #3d3d3d);
+    }
+    .btn-login,.btn-outline-danger{
+        font-family: "Poppins", sans-serif;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 1px;
+        display: inline-block;
+        padding: 8px 28px;
+        border-radius: 50px;
+        transition: 0.5s;
+        margin: 10px;
+        border: 2px solid #fff;
+        color: #fff;
+    }
+
+    .error-message{
+        color: red;
+        font-size: 13px;
+    }
+
+    .home{
+        text-align: center;
+    }
+    @media (min-width: 868px) {
+    .gradient-form {
+    height: 130vh !important;
+    }
+    }
+    
