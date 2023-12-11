@@ -23,8 +23,8 @@
                 <h3>Find Pet</h3>
                 <form action="/find-pet" method="get" th:object="${found}">
                     <div class="form-outline mb-4">
-                    <label>Pet Name</label>
-                    <input type="text" name="petName" id="petName" class="form-control" />
+                        <label>Pet Name</label>
+                        <input type="text" name="petName" id="petName" class="form-control" />
                     </div>
 
                     <button class="btn-list gradient-custom-2 mb-3">Search</button>
@@ -38,56 +38,63 @@
             <div class="border">
                 <h3>Update Pet Information</h3>
                 <form action="/update-pet" method="post" th:object="${found}">
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Pet ID</label>
-                    <input type="text" name="id" th:field="*{id}" class="form-control" required />
+                        <label>Pet ID</label>
+                        <input type="text" name="id" th:field="*{id}" class="form-control" required />
                     </div>
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Pet Name</label>
-                    <input type="text" name="petName" th:field="*{petName}" class="form-control" required />
+                        <label>Pet Name</label>
+                        <input type="text" name="petName" th:field="*{petName}" class="form-control" required />
                     </div>
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Pet Species</label>
-                    <input type="text" name="petSpecies" th:field="*{petSpecies}" class="form-control" required />
+                        <label>Pet Species</label>
+                        <input type="text" name="petSpecies" th:field="*{petSpecies}" class="form-control" required />
                     </div>
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Pet Color</label>
-                    <input type="text" name="petColor" th:field="*{petColor}" class="form-control" required />
+                        <label>Pet Color</label>
+                        <input type="text" name="petColor" th:field="*{petColor}" class="form-control" required />
                     </div>
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Pet Size</label>
-                    <input type="text" name="petSize" th:field="*{petSize}" class="form-control" required />
+                        <label>Pet Size</label>
+                        <input type="text" name="petSize" th:field="*{petSize}" class="form-control" required />
                     </div>
-                    
+
                     <div class="form-outline mb-4">
-                    <label>Adoption Status</label>
-                    <input type="text" name="adoptStatus" th:field="*{adoptStatus}" class="form-control" required />
+                        <label>Adoption Status</label>
+                        <select name="adoptStatus" id="adoptStatus" class="form-control" required>
+                            <option value="available" text="available"> available </option>
+                            <option value="pending" text="pending"> pending </option>
+                            <option value="adopted" text="adopted"> adopted </option>
+                        </select>
+                        <!-- <input type="text" name="adoptStatus" th:field="*{adoptStatus}" class="form-control" required /> -->
                     </div>
                     <div class="form-outline mb-4">
-                    <p th:text="'Responsive Staff: ' + ${StaffInCharge}"></p>
-                    <input type="text" id="staffId" name="staffId" th:value="${StaffInCharge}" class="form-control"  readonly />
-                </div>
-                </div>
+                        <p th:text="'Responsive Staff: ' + ${StaffInCharge}"></p>
+                        <input type="text" id="staffId" name="staffId" th:value="${StaffInCharge}" class="form-control"
+                            readonly />
+                    </div>
+            </div>
         </div>
         <!-- Third Column -->
         <div class="col-md-3">
             <div class="border">
                 <h4 th:text="'Please select ' + ${currentOwner} + ' as pet owner, if owner is not changed.'"></h4>
                 <div class="form-outline mb-4">
-                <label>Pet Owner</label>
-                <select id="ownerId" name="ownerId" class="form-control">
-                    <option value="">-</option>
-                    <option th:each="owner: ${ownerAll}" th:value="${owner.userId}" th:text="${owner.userId}"></option>
-                </select>
+                    <label>Pet Owner</label>
+                    <select id="ownerId" name="ownerId" class="form-control">
+                        <option value="">-</option>
+                        <option th:each="owner: ${ownerAll}" th:value="${owner.userId}" th:text="${owner.userId}">
+                        </option>
+                    </select>
                 </div>
                 <button class="btn-list gradient-custom-2 mb-3">Update</button>
                 </form>
-             
+
             </div>
         </div>
     </div>
