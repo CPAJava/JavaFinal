@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- 
+* Author: Yanan Liu
+* Date: 2023-12-03
+*
+* Class/File: manager.html
+*
+* Additional context:
+* This is the manager landing page that manager can review/approve owner's registration
+*                and review/schedule owner's adopt request
+* -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +19,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script src="https://kit.fontawesome.com/e051e7d903.js" crossorigin="anonymous"></script>
   <script>
+    //to submit the registration status, alert when no option is selected
     function submitStatus() {
       var form = document.getElementById("statusForm");
       var statusDropdown = document.getElementById("adoptStatusDropdown");
       var selectedStatus = statusDropdown.options[statusDropdown.selectedIndex].value;
-      form.action = "/manager?status=" + selectedStatus;
-      form.submit();
+
+      if (selectedStatus === "") {
+        alert("Please select an option from the below dropdown list");
+      } else {
+        form.action = "/manager?status=" + selectedStatus;
+        form.submit();
+      }
     }
 
+    //to submit the registration status, alert when no option is selected
     function submitOwnerStatus() {
       var form = document.getElementById("ownerStatusForm");
       var ownerStatusDropdown = document.getElementById("registrationStatusDropdown");
       var ownerStatus = ownerStatusDropdown.options[ownerStatusDropdown.selectedIndex].value;
-      form.action = "/manager?ownerStatus=" + ownerStatus;
-      form.submit();
+
+      if (ownerStatus === "") {
+        alert("Please select an option from the below dropdown list");
+      } else {
+        form.action = "/manager?ownerStatus=" + ownerStatus;
+        form.submit();
+      }
     }
 
   </script>

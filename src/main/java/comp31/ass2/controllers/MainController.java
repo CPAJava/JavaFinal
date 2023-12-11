@@ -52,6 +52,8 @@ public class MainController {
     return "index";
   }
 
+  // ********************************************** Employee Manager related controllers
+  // (Yanan):
   @GetMapping("/manager")
   public String getRequest(Model model, String status, String searchEmployee, String ownerStatus) {
 
@@ -61,7 +63,7 @@ public class MainController {
     logger.info("pets", filteredPets);
     model.addAttribute("filteredPets", filteredPets);
 
-    // get petOwner
+    // get petOwner and get the owner based on status
     List<PetOwner> filteredOwner = employeeService.findOwnerByStatus(ownerStatus);
     model.addAttribute("ownerStatus", ownerStatus);
     model.addAttribute("filteredOwner", filteredOwner);
@@ -69,7 +71,8 @@ public class MainController {
     return "manager";
   }
 
-  @PostMapping("/approve-owner") // Post new added employee data and redirect to /employee
+  // Post the approve/decline to update the owner's status
+  @PostMapping("/approve-owner") // Post owner's status
   public String approveOwner(String ownerId, String ownerStatus) {
     employeeService.setOwnerStatus(ownerId, ownerStatus);
     return "redirect:/manager";
