@@ -1,69 +1,75 @@
-body{
-  color:teal;
+body {
+  color: teal;
 }
-h1,.entry{
+.entry {
   text-align: center;
 }
-
-.petOwnerLogin h2,label{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
+.petOwnerLogin h2,
+label {
   padding-left: 10px;
 }
-.petOwnerLogin label{
+.petOwnerLogin label {
   width: 100px;
 }
-label{
-  width:175px;
-  display: inline-block   ;
+label {
+  width: 175px;
+  display: inline-block;
   padding: 10px;
 }
-.login{
- padding-left: 10px;
+.login {
+  padding-left: 10px;
 }
 
-.left
-{
+.left {
   float: left;
   margin-right: 20px;
 }
 
-td,th {
+td,
+th {
   border: 1px solid black;
   width: 200px;
   text-align: center !important;
 }
 
-button{
+button {
   width: 100px;
   padding: 10px;
-  margin:20px;
-
+  margin: 20px;
 }
 
-button.nav{
+button.nav {
   width: 250px;
   padding: 10px;
-  margin:10px;
+  margin: 10px;
 }
 
-
 button:hover {
-  background-color: lightblue; 
-  color: blue; 
-  cursor: hand; 
+  background-color: lightblue;
+  color: blue;
+  cursor: hand;
   font-weight: bold;
 }
 
 .container {
   width: 100%;
-  display: flex; 
+  display: flex;
   flex-direction: row;
   margin: auto;
 }
 
 .sub-div {
-  width: 50%; 
-  margin-bottom: 30px; 
-  margin-left:20px;
+  width: 50%;
+  margin-bottom: 30px;
+  margin-left: 20px;
 }
 
 .visible {
