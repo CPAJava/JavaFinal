@@ -1,3 +1,9 @@
+<!-- * Author: Xuancheng Li
+* Date: 2023-12-06
+*
+* Class/File: updatePets.html
+*
+* Serves as office staff 2nd page that surpport them to search spcific pet by name and then update its information.  -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +38,7 @@
             </div>
         </div>
 
-        <!-- <p th:text="${pet.petName}"></p> -->
+        
         <!-- Second Column -->
         <div class="col-md-3">
             <div class="border">
@@ -71,7 +77,7 @@
                             <option value="pending" text="pending"> pending </option>
                             <option value="adopted" text="adopted"> adopted </option>
                         </select>
-                        <!-- <input type="text" name="adoptStatus" th:field="*{adoptStatus}" class="form-control" required /> -->
+                        
                     </div>
                     <div class="form-outline mb-4">
                         <p th:text="'Responsive Staff: ' + ${StaffInCharge}"></p>
