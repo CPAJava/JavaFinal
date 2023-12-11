@@ -89,7 +89,6 @@
                           <td th:text="${pet.petColor}"></td>
                           <td th:text="${pet.petSize}"></td>
                           <td th:text="${pet.adoptStatus}"></td>
-                          <!-- <td th:text="${pet.employee.userid}"></td> -->
                         </tr>
                       </tbody>
                     </table>
@@ -150,16 +149,17 @@
                 required
               />
             </div>
-            <div class="form-outline mb-4">
+            <!-- <div class="form-outline mb-4">
               <label>Adoption Status</label>
               <input
                 type="text"
                 name="adoptStatus"
                 th:field="*{adoptStatus}"
+             
                 class="form-control"
                 required
               />
-            </div>
+            </div> -->
 
             <div class="form-outline mb-4">
               <label>Staff Name</label>
