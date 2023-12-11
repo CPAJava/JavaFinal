@@ -14,16 +14,31 @@
 -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <title>User not approved</title>
-</head>
-<body>
+  </head>
+  <body>
+    <section id="hero" class="d-flex align-items-center">
+      <div
+        class="container text-center position-relative"
+        data-aos="fade-in"
+        data-aos-delay="200"
+      >
+        <h2>Sorry, your account has not been approved yet.</h2>
 
-    <h2>Sorry, your account has not been approved yet.</h2>
-
-    <p>You can go back to the <a th:href="@{/}">home page</a>.</p>
-
-</body>
+        <p>You can go back to the <a th:href="@{/}">home page</a>.</p>
+      </div>
+    </section>
+  </body>
 </html>
