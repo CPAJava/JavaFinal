@@ -1,3 +1,14 @@
+/*
+* Author: Xuancheng Li
+* Date: 2023-12-06
+*
+* Class/File: StaffService.java
+*
+* This Java service class provides all functionalities that office staff will mainly focused about. 
+* These functions includes basic CRUD funcions to pet database, which composes the main structure
+* of staff main page. 
+* 
+*/
 package comp31.ass2.services;
 
 import java.util.ArrayList;
@@ -27,11 +38,11 @@ public class StaffService {
         this.petsRepo = petsRepo;
         this.petOwnerRepo =petOwnerRepo;
     }
-
+    //find All Pets from database
     public List<Pet> findAllPets() {
         return petsRepo.findAll();
     }
-    
+    //find one pet by its name
     public Pet findByPetName(String petName) {
         Pet foundPet = null;
         List<Pet> tempFound = petsRepo.findByPetName(petName);
@@ -39,27 +50,26 @@ public class StaffService {
             foundPet = tempFound.get(0);
         }        
         return foundPet;
-        //return petsRepo.findByPetName(petName);
     }
-
+    //insert a new pet/update existing pet
     public void insertPet(Pet newPet) {
         petsRepo.save(newPet);
     }
-
+    //delete one pet by its name
     public void deleteByPetName(String delName) {
         List<Pet> tempPets = petsRepo.findByPetName(delName);
-        //System.out.println(tempPets);
+        
         if (!tempPets.isEmpty()) {
             Pet tempPet = tempPets.get(0);
             Integer tempPetId = tempPet.getId();
             petsRepo.deleteById(tempPetId);
         }
     }
-
+    //filter pets by species
     public List<Pet> findByPetSpecies(String species) {
         return petsRepo.findByPetSpecies(species);
     }
-
+    //find all pets' species for staff to choose
     public ArrayList<String> findAllPetSpecies() {
 
         List<Pet> allPetsList = petsRepo.findAll();
@@ -73,7 +83,7 @@ public class StaffService {
 
         return allPetSpecies;
     }
-
+    //find all staff names
     public ArrayList<String> findAllStaffs() {
         ArrayList<String> allStaffs = new ArrayList<>();
         List<Employee> allEmployee = employeeRepo.findAll();
@@ -84,15 +94,15 @@ public class StaffService {
         }
         return allStaffs;
     }
-
+    //find staff user id
     public Employee findByUserId(String userId) {
         return employeeRepo.findByUserId(userId);
     }
-
+    //find all owners
     public List<PetOwner> findAllOwners() {
         return petOwnerRepo.findAll();
     }
-
+    //find owner by userid
     public PetOwner findOwnerByUserId(String userId) {
         return petOwnerRepo.findByUserId(userId);
     }
