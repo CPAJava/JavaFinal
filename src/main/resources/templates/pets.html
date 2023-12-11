@@ -1,95 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/employee.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/e051e7d903.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Staff</title>
+  </head>
 
-    <h3>Filter Pets:</h3>
-    <br>
+  <body>
+    <h1>
+      Staff's Page
+      <a href="/" class="home"
+        ><i class="fa-sharp fa-solid fa-house"></i>Home</a
+      >
+      <a class="home" href="/updatePetPage"
+        ><i class="fa-sharp fa-solid fa-pen-to-square"></i>To Update Pet Record
+      </a>
+    </h1>
+    <div class="row">
+      <!-- First Column -->
+      <div class="col-md-6 ml-2">
+        <div class="border">
+          <h3>Filter Pets:</h3>
+          <br />
 
-    <form action="/add-pet" method="get">
-
-        <div>
-            <select id="selectedSpecies" name="selectedSpecies">
+          <form action="/add-pet" method="get">
+            <button class="btn-list gradient-custom-2 mb-3">Submit</button>
+            <div>
+              <select
+                class="form-control"
+                id="selectedSpecies"
+                name="selectedSpecies"
+              >
                 <option value="all">All</option>
-                <option th:each="species: ${speciesAll}" th:value="${species}" th:text="${species}">
-                </option>
-            </select>
+                <option
+                  th:each="species: ${speciesAll}"
+                  th:value="${species}"
+                  th:text="${species}"
+                ></option>
+              </select>
+            </div>
+          </form>
+
+          <br />
+          <div class="container">
+            <div class="row">
+              <div class="col-md-offset-1 col-md-11">
+                <div class="panel">
+                  <div class="panel-heading">
+                    <div class="row">
+                      <div class="col">
+                        <h4
+                          class="title"
+                          th:text="'Pets - filtered by ' + ${title} "
+                        ></h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-body table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Pet ID&nbsp</th>
+                          <th>Pet Name&nbsp</th>
+                          <th>Species&nbsp</th>
+                          <th>Color&nbsp</th>
+                          <th>Size&nbsp</th>
+                          <th>Status&nbsp</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="pet : ${allPets}">
+                          <td th:text="${pet.id}"></td>
+                          <td th:text="${pet.petName}"></td>
+                          <td th:text="${pet.petSpecies}"></td>
+                          <td th:text="${pet.petColor}"></td>
+                          <td th:text="${pet.petSize}"></td>
+                          <td th:text="${pet.adoptStatus}"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button>Submit</button>
-    </form>
+      </div>
 
-    <br>
-    <h3 th:text="'Pets - filtered by ' + ${title} "></h3>
-    <table>
-        <tr>
-            <th>Pet ID&nbsp</th>
-            <th>Pet Name&nbsp</th>
-            <th>Species&nbsp</th>
-            <th>Color&nbsp</th>
-            <th>Size&nbsp</th>
-            <th>Status&nbsp</th>
-        </tr>
-        <tr th:each="pet : ${allPets}">
-            <td th:text="${pet.id}"></td>
-            <td th:text="${pet.petName}"></td>
-            <td th:text="${pet.petSpecies}"></td>
-            <td th:text="${pet.petColor}"></td>
-            <td th:text="${pet.petSize}"></td>
-            <td th:text="${pet.adoptStatus}"></td>
-            <!-- <td th:text="${pet.employee.userid}"></td> -->
+      <!-- Second Column -->
+      <div class="col-md-3">
+        <div class="border">
+          <h3>Create a new pet</h3>
+          <form action="/add-pet" method="post" th:object="${pet}">
+            <div class="form-outline mb-4">
+              <label>Pet Name</label>
+              <input
+                type="text"
+                name="petName"
+                th:field="*{petName}"
+                class="form-control"
+                required
+              />
+            </div>
 
-        </tr>
-    </table>
-    <br><br>
+            <div class="form-outline mb-4">
+              <label>Pet Species</label>
+              <input
+                type="text"
+                name="petSpecies"
+                th:field="*{petSpecies}"
+                class="form-control"
+                required
+              />
+            </div>
 
-    <h3>Create a new pet</h3>
-    <form action="/add-pet" method="post" th:object="${pet}">
-        <label>Pet Name</label>
-        <input type="text" name="petName" th:field="*{petName}" required>
-        <br>
-        <label>Pet Species</label>
-        <input type="text" name="petSpecies" th:field="*{petSpecies}" required>
-        <br>
-        <label>Pet Color</label>
-        <input type="text" name="petColor" th:field="*{petColor}" required>
-        <br>
-        <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}" required>
-        <br>
-        <label>Adoption Status</label>
-        <input type="text" name="adoptStatus" th:field="*{adoptStatus}" required>
-        <br>
-        <label>Staff Name</label>
-        <select id="userId" name="userId">
-            <!-- <option value="all">All</option> -->
-            <option th:each="staff: ${staffAll}" th:value="${staff}" th:text="${staff}">
-            </option>
-        </select>
-        <br>
-        <button>Add</button>
-    </form>
+            <div class="form-outline mb-4">
+              <label>Pet Color</label>
+              <input
+                type="text"
+                name="petColor"
+                th:field="*{petColor}"
+                class="form-control"
+                required
+              />
+            </div>
 
-    <h3>Delete Pet</h3>
-    <form action="/delete-pet" method="get" th:object="${pet}">
-        <label>Pet Name</label>
-        <input type="text" name="petName" th:field="*{petName}">
-        <br>
-        <!-- <label>Pet Species</label>
-        <input type="text" name="petSpecies" th:field="*{petSpecies}">
-        <br>
-        <label>Pet Color</label>
-        <input type="text" name="petColor" th:field="*{petColor}">
-        <br>
-        <label>Pet Size</label>
-        <input type="text" name="petSize" th:field="*{petSize}"> -->
-        <br>
-        <button>Delete</button>
-    </form>
+            <div class="form-outline mb-4">
+              <label>Pet Size</label>
+              <input
+                type="text"
+                name="petSize"
+                th:field="*{petSize}"
+                class="form-control"
+                required
+              />
+            </div>
+            <!-- <div class="form-outline mb-4">
+              <label>Adoption Status</label>
+              <input
+                type="text"
+                name="adoptStatus"
+                th:field="*{adoptStatus}"
+             
+                class="form-control"
+                required
+              />
+            </div> -->
 
-    <h3><a href="/updatePetPage">Update Pet Record</a></h3h3>
-</body>
+            <div class="form-outline mb-4">
+              <label>Staff Name</label>
+              <select id="userId" name="userId" class="form-control">
+                <!-- <option value="all">All</option> -->
+                <option
+                  th:each="staff: ${staffAll}"
+                  th:value="${staff}"
+                  th:text="${staff}"
+                ></option>
+              </select>
+            </div>
+
+            <button class="btn-list gradient-custom-2 mb-3">Add</button>
+          </form>
+        </div>
+      </div>
+      <!-- Third Column -->
+      <div class="col-md-2">
+        <div class="border">
+          <h3>Delete Pet</h3>
+          <form action="/delete-pet" method="get" th:object="${pet}">
+            <div class="form-outline mb-4">
+              <label>Pet Name</label>
+              <input
+                type="text"
+                name="petName"
+                th:field="*{petName}"
+                class="form-control"
+              />
+            </div>
+            <button class="btn-list gradient-custom-2 mb-3">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
